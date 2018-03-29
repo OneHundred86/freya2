@@ -1,0 +1,223 @@
+@import "../../core/less/ui.var.less";
+
+.group-list{
+	width:100%;
+	height:auto;
+	min-height:100px;
+	overflow:hidden;
+	position:relative;
+	width:906px;
+	margin:0 8px;
+	> .item{
+		width:100%;
+		height:auto;
+		min-height:100px;
+		border-bottom:@border-weak;
+		position:relative;
+		margin:0;
+		overflow:hidden;
+		> .name{
+			position:absolute;
+			width:auto;
+			min-width:1px;
+			overflow:hidden;
+			height:24px;
+			line-height:24px;
+			top:38px;
+			left:48px;
+			font-size:15px;
+			color:@grey600;
+		}
+		> .ctrl{
+			width:auto;
+			min-width:1px;
+			overflow:hidden;
+			position:absolute;
+			right:8px;
+			top:30px;
+			height:40px;
+			> .ctrl-item{
+				width:32px;
+				height:32px;
+				float:left;
+				line-height:32px;
+				text-align:center;
+				color:@grey700;
+				background-color:@grey200;
+				margin:4px;
+				border-radius:16px;
+			}
+		}
+		> .prefix{
+			position:absolute;
+			display:block;
+			width:12px;
+			height:12px;
+			top:44px;
+			left:18px;
+			background-color:@grey300;
+			border-radius:6px;
+		}
+		> .priv-frame{
+			width:216px;
+			margin:99px 0 8px 32px;
+			height:auto;
+			min-height:1px;
+			overflow:hidden;
+			position:relative;
+			float:right;
+			border:@grey300 1px solid;
+			display:none;
+			> .hd{
+				width:100%;
+				height:32px;
+				background-color:@grey100;
+				line-height:32px;
+				color:@grey700;
+				font-size:15px;
+				text-align:center;
+				border-bottom:@grey300 1px solid;
+				> .add-char{
+					position:absolute;
+					top:4px;
+					right:4px;
+					width:24px;
+					height:24px;
+					line-height:24px;
+					text-align:center;
+					font-size:15px;
+					background-color:@blue-normal;
+					color:#fff;
+					border-radius:12px;
+					cursor:pointer;
+				}
+				> .add:hover{
+					background-color:@blue-hover;
+				}
+			}
+			> .char-list{
+				width:100%;
+				height:auto;
+				min-height:100px;
+				overflow:hidden;
+				clear:both;
+				> .char-item{
+					width:100%;
+					height:32px;
+					clear:both;
+					position:relative;
+					> .name{
+						position:absolute;
+						left:0;
+						top:0;
+						right:32px;
+						line-height:32px;
+						height:32px;
+						overflow:hidden;
+						text-indent:8px;
+						font-size:15px;
+						color:@grey500;
+					}
+					> .remove-char{
+						position:absolute;
+						right:0;
+						width:32px;
+						height:32px;
+						line-height:32px;
+						text-align:center;
+						font-size:14px;
+						color:@red-normal;
+					}
+				}
+			}
+		}
+	}
+	> .item:before{
+		content:"";
+		position:absolute;
+		display:block;
+		width:1px;
+		height:50px;
+		top:0;
+		left:24px;
+		border-left:@border-weak;
+		border-bottom:@border-weak;
+	}
+	> .item:after{
+		content:"";
+		position:absolute;
+		display:block;
+		width:1px;
+		top:50px;
+		left:24px;
+		bottom:0;
+		border-left:@border-weak;
+		border-top:@border-weak;
+	}
+	> .item.lv-1{
+		> .name{
+			left:48px + 48;
+		}
+		> .prefix{
+			left:18px + 48;
+		}
+	}
+	> .item.lv-1:before{
+		width:42px;
+		left:24px;
+	}
+
+
+	> .item.lv-2{
+		> .name{
+			left:48px + 48 + 48;
+		}
+		> .prefix{
+			left:18px + 48 + 48;
+		}
+	}
+	> .item.lv-2:before{
+		width:42px + 48;
+	}
+
+
+	> .item.lv-3{
+		> .name{
+			left:48px + 48 + 48 + 48;
+		}
+		> .prefix{
+			left:18px + 48 + 48 + 48;
+		}
+	}
+	> .item.lv-3:before{
+		width:42px + 48 + 48;
+	}
+
+	> .item.lv-4{
+		> .name{
+			left:48px + 48 + 48 + 48 + 48;
+		}
+		> .prefix{
+			left:18px + 48 + 48 + 48 + 48;
+		}
+	}
+	> .item.lv-4:before{
+		width:42px + 48 + 48 + 48;
+	}
+
+	> .item.lv-5{
+		> .name{
+			left:48px + 48 + 48 + 48 + 48 + 48;
+		}
+		> .prefix{
+			left:18px + 48 + 48 + 48 + 48 + 48;
+		}
+	}
+	> .item.lv-5:before{
+		width:42px + 48 + 48 + 48 + 48;
+	}
+
+	> .item:last-child{
+		border-bottom:none;
+	}
+}

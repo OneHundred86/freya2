@@ -1,0 +1,182 @@
+@import "../../core/less/ui.var.less";
+
+.group.single{
+	text-decoration: none;
+}
+
+.admin-menu{
+	position:fixed;
+	top:@header-height;
+	left:0;
+	width:256px;
+	bottom:0;
+	overflow-y:auto;
+	overflow-x:hidden;
+	background:#fff;
+	box-shadow:1px 0 4px rgba(0, 0, 0, .3);
+	z-index:1000;
+	> .group{
+		position:relative;
+		width:100%;
+		height:auto;
+		min-height:1px;
+		overflow:hidden;
+		clear:both;
+		margin:0;
+		padding:0;
+		border-bottom:@border-weak;
+		> .hd{
+			width:100%;
+			height:56px;
+			clear:both;
+			position:relative;
+			background-color:#fff;
+			cursor:pointer;
+			transition:all ease-in .1s;
+			> i{
+				display:block;
+				width:40px;
+				height:40px;
+				position:absolute;
+				left:8px;
+				top:8px;
+				line-height:40px;
+				font-size:20px;
+				text-align:center;
+				color:@grey500;
+			}
+			> span{
+				display:block;
+				line-height:56px;
+				height:56px;
+				width:100%;
+				text-indent:56px;
+				font-size:15px;
+				color:@grey800;				
+			}
+			> .fold, .unfold{
+				display:block;
+				width:40px;
+				height:40px;
+				position:absolute;
+				right:8px;
+				top:8px;
+				line-height:40px;
+				font-size:20px;
+				text-align:center;
+				color:@grey700;
+			}
+			> .unfold{
+				display:none;
+			}
+		}
+		> .hd:hover{
+			background-color:@grey200;
+		}
+		> .hd:active{
+			background-color:@grey300;
+		}
+		> .field{
+			position:relative;
+			height:auto;
+			width:100%;
+			min-height:1px;
+			overflow:hidden;
+			transition:all ease-out .2s;
+			> .item{
+				cursor:pointer;
+				display:block;
+				width:100%;
+				height:56px;
+				clear:both;
+				position:relative;
+				text-decoration:none;
+				background-color:#fff;
+				> span{
+					display:block;
+					line-height:56px;
+					height:56px;
+					width:100%;
+					text-indent:56px;
+					font-size:15px;
+					color:@grey800;
+					position:relative;				
+					z-index:200;
+					transition:all linear .2s;
+					transition-delay:.2s;
+					-webkit-transition:all linear .2s;
+					-webkit-transition-delay:.2s;
+					-moz-transition:all linear .2s;
+					-moz-transition-delay:.2s;
+				}
+			}
+			> .item:before{
+				content:"";
+				position:absolute;
+				top:0;
+				left:56px;
+				right:0;
+				height:1px;
+				background-color:@grey200;
+			}
+			> .item:after{
+				content:"";
+				position:absolute;
+				top:0;
+				left:0;
+				width:100%;
+				height:56px;
+				background-color:@grey500;
+				transition:all linear .2s;
+				transform:scale(0.0001, 1);
+				transform-origin:right center;
+				opacity:0;
+				z-index:100;
+			}
+			> .item:hover{
+				background-color:@grey200;
+			}
+			> .item:active{
+				background-color:@grey300;
+			}
+			> .item.selected{
+				> span{
+					color:@blue-normal;
+				}
+			}
+			> .item.selected:after{
+				transform:scale(1);
+				opacity:.3;
+			}
+			> .item.selected + .item:before{
+				display:none;
+			}
+		}
+	}
+	> .group.folded{
+		> .hd{
+			> .fold{
+				display:none;
+			}
+			> .unfold{
+				display:block;
+			}
+		}
+		> .field{
+			height:0;
+			> .item:before{
+				display:none;
+			}
+		}
+	}
+}
+
+.admin-page{
+	position:relative;
+	width:924px;
+	height:auto;
+	min-height:500px;
+	overflow:hidden;
+	margin:@header-height + 16 auto;
+	left:128px;
+}
