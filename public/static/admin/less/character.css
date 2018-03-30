@@ -183,7 +183,7 @@
   position: relative;
 }
 .ca-list > .body > .item > .k {
-  width: 150px;
+  width: 200px;
   height: 41px;
   line-height: 40px;
   font-size: 14px;
@@ -194,8 +194,13 @@
   overflow: hidden;
   position: relative;
 }
+.ca-list > .body > .item > .k.desc {
+  width: auto;
+  border-right: none;
+}
 .ca-list > .body > .item > .toggle {
-  margin: 5px;
+  float: right;
+  margin: 5px 8px 5px 5px;
 }
 .ca-list > .body > .item.ignored > .k {
   color: #25894f;
@@ -218,7 +223,7 @@
   margin-top: 8px;
 }
 .ca-list > .body > .group > .k {
-  width: 150px;
+  width: 200px;
   height: 40px;
   line-height: 40px;
   font-size: 14px;
@@ -228,6 +233,11 @@
   border-right: 1px #E0E0E0 solid;
   overflow: hidden;
   position: relative;
+}
+.ca-list > .body > .group > .k.nbr {
+  border-right: none;
+  min-width: 150px;
+  width: auto;
 }
 .ca-list > .body > .group > .col {
   margin-right: 8px;

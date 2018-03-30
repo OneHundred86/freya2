@@ -56,7 +56,7 @@
         </div>
         <div class="group" data-node="dwCAListGroup">
             <div class="k" data-node="dwC"></div>
-            <div class="k" data-node="dwDesc"></div>
+            <div class="k nbr" data-node="dwDesc"></div>
             <div class="col right">
                 <div class="btn-all">
                     <span>全选</span>
@@ -68,8 +68,7 @@
         </div>
         <div class="item" data-node="dwCAListItem">
             <div class="k" data-node="dwC"></div>
-            <div class="k" data-node="dwA"></div>
-            <div class="k" data-node="dwDesc"></div>
+            <div class="k desc" data-node="dwA"></div>
             <div class="toggle" data-node="dwToggle"></div>
         </div>
     </div>

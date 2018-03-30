@@ -28,6 +28,8 @@ Route::group(
 		Route::post('/admin/checkLogin', 'UserController@checkLogin');
 		Route::post('/admin/login', 'UserController@login');
 
+		Route::get('/error/noauth', 'ErrorController@noauth');
+
 	}
 );
 
@@ -38,8 +40,8 @@ Route::group(
 		'prefix' => 'admin'
 	],
 	function () {
-		Route::get('/', 'UserController@index');
-		Route::get('/main', 'UserController@index');
+		Route::get('/', 'UserController@index')->name('adminIndex');
+		Route::get('/main', 'UserController@main');
 		Route::get('/logout', 'UserController@logout');
 
 		// 用户
@@ -74,6 +76,7 @@ Route::group(
 		Route::post('/character/auth/del', 'CharacterController@delCharacterAuth');
 
 		Route::get('/accountSetting', 'UserController@accountSettingPage');
+
 	}
 );
 

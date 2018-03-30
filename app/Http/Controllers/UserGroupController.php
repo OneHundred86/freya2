@@ -37,7 +37,7 @@ class UserGroupController extends Controller
       'name'        => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('addUserGroup'))
+    if(!UserLib::checkAuth('UserGroup.addUser'))
       return $this->e(-1, '权限不足');
 
     $name = $request->name;
@@ -58,8 +58,11 @@ class UserGroupController extends Controller
       'name'        => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('editUserGroup'))
+    if(!UserLib::checkAuth('UserGroup.edit'))
       return $this->e(-1, '权限不足');
+
+    if($request->id == USERGROUP_ADMIN)
+      return $this->e('超级管理员用户组不可修改');
 
     $m = UserGroupModel::find($request->id);
     if(!$m)
@@ -80,9 +83,11 @@ class UserGroupController extends Controller
       'id'          => 'required|integer',
     ]);
 
-    if(!UserLib::checkAuth('delUserGroup'))
+    if(!UserLib::checkAuth('UserGroup.del'))
       return $this->e(-1, '权限不足');
 
+    if($request->id == USERGROUP_ADMIN)
+      return $this->e('超级管理员用户组不可删除');
 
     $m = UserGroupModel::find($request->id);
     if(!$m)
@@ -118,8 +123,11 @@ class UserGroupController extends Controller
       'character'   => 'required|integer',
     ]);
 
-    if(!UserLib::checkAuth('editUserGroup'))
+    if(!UserLib::checkAuth('UserGroup.edit'))
       return $this->e(-1, '权限不足');
+
+    if($request->id == USERGROUP_ADMIN)
+      return $this->e('超级管理员用户组不可修改');
 
     $ug = UserGroupModel::find($request->id);
     if(!$ug)
@@ -154,8 +162,11 @@ class UserGroupController extends Controller
       'character'   => 'required|integer',
     ]);
 
-    if(!UserLib::checkAuth('editUserGroup'))
+    if(!UserLib::checkAuth('UserGroup.edit'))
       return $this->e(-1, '权限不足');
+
+    if($request->id == USERGROUP_ADMIN)
+      return $this->e('超级管理员用户组不可修改');
 
     $ug = UserGroupModel::find($request->id);
     if(!$ug)

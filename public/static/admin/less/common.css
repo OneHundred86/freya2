@@ -67,6 +67,7 @@
   text-decoration: none;
 }
 .admin-menu {
+  display: none;
   position: fixed;
   top: 55px;
   left: 0;

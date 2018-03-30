@@ -118,7 +118,7 @@
 			clear:both;
 			position:relative;
 			> .k{
-				width:150px;
+				width:200px;
 				height:41px;
 				line-height:40px;
 				font-size:14px;
@@ -128,9 +128,14 @@
 				border-right:1px @grey300 solid;
 				overflow:hidden;
 				position:relative;
+				&.desc{
+					width:auto;
+					border-right: none;
+				}
 			}
 			> .toggle{
-				margin:5px;
+				float: right;
+				margin:5px 8px 5px 5px;
 			}
 		}
 		> .item.ignored{
@@ -155,7 +160,7 @@
 			position:relative;
 			margin-top:8px;
 			> .k{
-				width:150px;
+				width:200px;
 				height:40px;
 				line-height:40px;
 				font-size:14px;
@@ -165,6 +170,11 @@
 				border-right:1px @grey300 solid;
 				overflow:hidden;
 				position:relative;
+				&.nbr{
+					border-right: none;
+					min-width: 150px;
+					width: auto;
+				}
 			}
 			> .col{
 				margin-right:8px;

@@ -63,8 +63,15 @@ $(function () {
                     caList.domMap = {};
 
                     caList.$.empty();
+
                     $.each(d.list, function (key, val) {
-                        caList.map[key] = {auth: key, desc: val};
+                        var map = caList.map[key] = {};
+                        map.description = val.description;
+                        map.moduleName = key;
+                        map.auths = {};
+                        $.each(val.auths, function (auth, desc) {
+                            map.auths[auth] = {auth: auth, desc: desc, real: key+'.'+auth};
+                        })
                     });
 
                     caList.cacheMap = JSON.stringify(caList.map);
@@ -82,21 +89,26 @@ $(function () {
                 }, function (c, d) {
                     caList.loading(false);
                     d.list.forEach(function (val) {
-                        caList.map[val].checked = !!caList.map[val]
+                        val = val.split('.');
+                        caList.map[val[0]].auths[val[1]].checked = true;
                     });
-                    caList.addGroup('角色权限', caList.map);
+                    $.each(caList.map, function (auth, data) {
+                        caList.addGroup(auth, data);
+                    });
                 }, function (c, m) {
                     caList.loading(false);
                     G.error(m);
                 });
             },
-            addGroup: function (name, d) {
+            addGroup: function (auth, d) {
                 var e = tpl.dwCAListGroup.clone();
-                e.dwC.innerHTML = name;
+                e.dwC.innerHTML = auth;
+                e.dwDesc.innerHTML = d.description;
                 e.tData = d;
                 caList.$.append(e);
-                $.each(d, function (key, val) {
-                    caList.domMap[key] = caList.add(val);
+                var domMap = caList.domMap[auth] = {}
+                $.each(d.auths, function (key, val) {
+                    domMap[key] = caList.add(val);
                 });
                 return e;
             },
@@ -114,7 +126,7 @@ $(function () {
                             mt = '/admin/character/auth/del';
                         }
                         G.call(mt, {
-                            name: d.auth,
+                            name: d.real,
                             id: caList.cid
                         }, function (c, d) {
 
@@ -131,16 +143,16 @@ $(function () {
     });
     caList.$.on('click', '.btn-all', function () {
         var controller = $(this).parent().parent()[0].tData;
-        $.each(controller, function (key, val) {
+        $.each(controller.auths, function (key, val) {
             if (!val.checked) {
-                caList.domMap[key].ddToggle.toggle(true);
+                caList.domMap[controller.moduleName][key].ddToggle.toggle(true);
             }
         })
 
     }).on('click', '.btn-rev', function () {
         var controller = $(this).parent().parent()[0].tData;
-        $.each(controller, function (key, val) {
-            caList.domMap[key].ddToggle.toggle();
+        $.each(controller.auths, function (key, val) {
+            caList.domMap[controller.moduleName][key].ddToggle.toggle();
         })
     });
 

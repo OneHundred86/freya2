@@ -38,7 +38,7 @@ class CharacterController extends Controller
       'name'        => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('addCharacter'))
+    if(!UserLib::checkAuth('Character.add'))
       return $this->e(-1, '权限不足');
 
     $name = $request->name;
@@ -58,7 +58,7 @@ class CharacterController extends Controller
       'name'        => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('editCharacter'))
+    if(!UserLib::checkAuth('Character.edit'))
       return $this->e(-1, '权限不足');
 
     $m = CharacterModel::find($request->id);
@@ -80,7 +80,7 @@ class CharacterController extends Controller
       'id'          => 'required|integer',
     ]);
 
-    if(!UserLib::checkAuth('delCharacter'))
+    if(!UserLib::checkAuth('Character.del'))
       return $this->e(-1, '权限不足');
 
     $m = CharacterModel::find($request->id);
@@ -96,7 +96,7 @@ class CharacterController extends Controller
 
   public function allCharacterAuth(Request $request){
     return $this->o([
-      'list' => CharacterAuthLib::all(),
+      'list' => CharacterAuthLib::map(),
     ]);
   }
 
@@ -130,7 +130,7 @@ class CharacterController extends Controller
       'name'  => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('deployCharAuth'))
+    if(!UserLib::checkAuth('Character.deployAuth'))
       return $this->e(-1, '权限不足');
 
     $character_id = $request->id;
@@ -157,7 +157,7 @@ class CharacterController extends Controller
       'name'  => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('deployCharAuth'))
+    if(!UserLib::checkAuth('Character.deployAuth'))
       return $this->e(-1, '权限不足');
 
     $character_id = $request->id;

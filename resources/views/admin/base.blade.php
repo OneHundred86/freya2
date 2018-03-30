@@ -56,15 +56,12 @@
             <a class="item" data-c="admin" data-a="usergroup">
                 <span>用户组管理</span>
             </a>
-            {{--<a class="item" data-c="admin" data-a="auth">--}}
-                {{--<span>权限列表</span>--}}
-            {{--</a>--}}
             <a class="item" data-c="admin" data-a="character">
                 <span>角色定义</span>
             </a>
         </div>
     </div>
-    <a class="group single " data-c="admin" data-a="accountSetting" >
+    <a class="group single " data-noAuth="1" data-c="admin" data-a="accountSetting" >
         <div class="hd">
             <i class="entypo-icon-cog"></i>
             <span>账号设置</span>

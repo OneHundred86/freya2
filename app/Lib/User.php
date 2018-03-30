@@ -6,9 +6,14 @@ use App\Model\User as UserModel;
 use App\Model\UserGroup as UserGroupModel;
 use App\Model\Character as CharacterModel;
 use App\Model\CharacterAuth as CharacterAuthModel;
+use App\Lib\CharacterAuth as CharacterAuthLib;
 use App\Lib\Util;
 use Illuminate\Support\Facades\Cookie;
 
+// 超级管理员用户分组
+define('USERGROUP_ADMIN', 1);
+
+// 字符串类型
 define('RAW_STRING', 0);
 define('MD5_STRING', 1);
 
@@ -171,17 +176,21 @@ class User
     if(!$user)
       return false;
 
-    $userGroup = UserGroupModel::find($user->group);
-    if(!$userGroup)
-      return false;
+    if($user->group === USERGROUP_ADMIN){
+      $auths = CharacterAuthLib::all();
+    }else{
+      $userGroup = UserGroupModel::find($user->group);
+      if(!$userGroup)
+        return false;
 
-    $characters = json_decode($userGroup->characters, true);
+      $characters = json_decode($userGroup->characters, true);
 
-    $characterAuths = CharacterAuthModel::whereIn('character_id', $characters)->get();
+      $characterAuths = CharacterAuthModel::whereIn('character_id', $characters)->get();
 
-    $auths = [];
-    foreach($characterAuths as $v){
-      $auths[$v->name] = true;
+      $auths = [];
+      foreach($characterAuths as $v){
+        $auths[$v->name] = true;
+      }
     }
 
     return array_keys($auths);
@@ -197,7 +206,7 @@ class User
     if(!$user)
       return false;
     // 特殊指定，超级管理员的用户组为1
-    if($user->group === 1)
+    if($user->group === USERGROUP_ADMIN)
       return true;
 
     $auths = self::getCharacterAuths($user);

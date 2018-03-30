@@ -9,6 +9,10 @@ use App\Lib\Vericode;
 
 class UserController extends Controller {
 	public function index(Request $request) {
+		return redirect('/admin/main');
+	}
+
+	public function main(){
 		return $this->view('admin/main');
 	}
 
@@ -60,7 +64,7 @@ class UserController extends Controller {
 			return $this->e(2, '帐号不存在，或者密码错误');
 		}
 		Vericode::invalidImageVericode();
-		return redirect('/admin/');
+		return redirect()->route('adminIndex');
 	}
 
 	public function logout(Request $request) {
@@ -70,7 +74,10 @@ class UserController extends Controller {
 
 	public function info(Request $request) {
 		$user = UserLib::getLoginUser();
-		return $this->o($user);
+		return $this->o([
+			'info' => $user,
+			'auths' => UserLib::getCharacterAuths($user),
+		]);
 	}
 
 	public function lists(Request $request){
@@ -106,7 +113,7 @@ class UserController extends Controller {
 			'group'			=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('addUser'))
+		if(!UserLib::checkAuth('User.add'))
 			return $this->e(-1, '权限不足');
 
 		$email = $request->email;
@@ -128,7 +135,7 @@ class UserController extends Controller {
 			'group'			=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('editUser'))
+		if(!UserLib::checkAuth('User.edit'))
 			return $this->e(-1, '权限不足');
 
 		$email = $request->email;
@@ -154,7 +161,7 @@ class UserController extends Controller {
 			'id'				=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('delUser'))
+		if(!UserLib::checkAuth('User.del'))
 			return $this->e(-1, '权限不足');
 
 		$m = UserModel::find($request->id);
@@ -174,7 +181,7 @@ class UserController extends Controller {
 			'group'		=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('editUser'))
+		if(!UserLib::checkAuth('User.edit'))
 			return $this->e(-1, '权限不足');
 
 		$m = UserModel::find($request->id);
@@ -195,7 +202,7 @@ class UserController extends Controller {
 			'ban'			=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('editUser'))
+		if(!UserLib::checkAuth('User.edit'))
 			return $this->e(-1, '权限不足');
 
 		$m = UserModel::find($request->id);
