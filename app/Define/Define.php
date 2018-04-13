@@ -12,7 +12,8 @@ define('USER_BANED', 1);  // 禁用用户
 
 
 
-// 登录校验错误码
+// CS交互错误码
+define('ERROR_OK', 0);
 define('ERROR_NO_LOGINED', 100);
 
 define('ERROR_USER_NO_EXIST', 200);
