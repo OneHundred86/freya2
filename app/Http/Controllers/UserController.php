@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\User as UserModel;
 use App\Lib\User as UserLib;
+use App\Entity\User as UserEntity;
 use App\Lib\Vericode;
 
 class UserController extends Controller {
@@ -40,11 +41,11 @@ class UserController extends Controller {
 
 		$errorCode = UserLib::checkLogin($request->email, $request->password);
 		if($errorCode === ERROR_USER_NO_EXIST)
-			return $this->e('用户不存在');
+			return $this->e($errorCode, '用户不存在');
 		elseif($errorCode === ERROR_USER_BANED)
-			return $this->e('帐号已被封号，请联系管理员');
+			return $this->e($errorCode, '帐号已被封号，请联系管理员');
 		elseif($errorCode === ERROR_PASSWORD_ERROR)
-			return $this->e('密码错误');
+			return $this->e($errorCode, '密码错误');
 
 		return $this->o();
 	}
@@ -72,8 +73,7 @@ class UserController extends Controller {
 		return redirect()->route('adminLogin');
 	}
 
-	public function info(Request $request) {
-		$user = UserLib::getLoginUser();
+	public function info(Request $request, UserEntity $user) {
 		return $this->o([
 			'info' => $user,
 			'auths' => UserLib::getCharacterAuths($user),
