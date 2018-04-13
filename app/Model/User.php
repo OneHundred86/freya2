@@ -25,8 +25,8 @@ class User extends Model
 
     // 如果修改的是当前登录用户的信息，得即时更新登录用户信息
     $cur = UserLib::getLoginUser();
-    if($cur && $cur->id === $this->id){
-      UserLib::setLoginUser($this);
+    if($cur->id === $this->id){
+      $cur->setModel($this);
     }
 
     return true;

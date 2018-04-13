@@ -3,6 +3,7 @@
 namespace App\Lib;
 
 use App\Model\User as UserModel;
+use App\Entity\User as UserEntity;
 use App\Model\UserGroup as UserGroupModel;
 use App\Model\Character as CharacterModel;
 use App\Model\CharacterAuth as CharacterAuthModel;
@@ -10,53 +11,13 @@ use App\Lib\CharacterAuth as CharacterAuthLib;
 use App\Lib\Util;
 use Illuminate\Support\Facades\Cookie;
 
-// 超级管理员用户分组
-define('USERGROUP_ADMIN', 1);
-
-// 字符串类型
-define('RAW_STRING', 0);
-define('MD5_STRING', 1);
-
-define('USER_UNBAN', 0);  // 正常用户
-define('USER_BANED', 1);  // 禁用用户
-
-// 登录校验错误码
-define('ERROR_USER_NO_EXIST', 0);
-define('ERROR_USER_BANED', -1);
-define('ERROR_PASSWORD_ERROR', -2);
 
 class User
 {
-  # UserModel
-  private static $cur;
-
-  public static function setLoginUser(UserModel $user){
-    self::$cur = $user;
-  }
-
   // 获取当前登录的用户信息
-  # => false | UserModel
+  # => UserEntity
   static public function getLoginUser(){
-    if(!empty(self::$cur))
-      return self::$cur;
-
-    $user_id = Session::getLoginUserID();
-
-    if($user_id){
-      $user = UserModel::find($user_id);
-    }
-    else{
-      $user = self::getUserFromCookie();
-    }
-
-    if(!$user){
-      return false;
-    }elseif($user->ban === USER_BANED){
-      return false;
-    }
-
-    self::$cur = $user;
-    return $user;
+    return app()->make(UserEntity::class);
   }
 
   private static function getUserFromCookie(){
