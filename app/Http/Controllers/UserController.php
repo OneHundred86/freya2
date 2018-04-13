@@ -217,7 +217,7 @@ class UserController extends Controller {
 		]);
 	}
 
-	public function modifyPassword(Request $request){
+	public function modifyPassword(Request $request, UserEntity $user){
 		$this->validate($request, [
 			'old'			=> 'required|string',
 			'new'			=> 'required|string',
@@ -226,7 +226,6 @@ class UserController extends Controller {
 		$old = $request->old;
 		$new = $request->new;
 
-		$user = UserLib::getLoginUser();
 		if($user->password != UserLib::makePassword($old, $user->salt, MD5_STRING))
 			return $this->e('原密码错误');
 

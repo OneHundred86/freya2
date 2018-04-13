@@ -15,11 +15,29 @@ use Illuminate\Support\Facades\Cookie;
 class User
 {
   // 获取当前登录的用户信息
-  # => UserEntity
+  # => false | UserEntity
   static public function getLoginUser(){
-    return app()->make(UserEntity::class);
+    $ue = app()->make(UserEntity::class);
+    
+    if(empty($ue->id)){
+      $user_id = Session::getLoginUserID();
+      if($user_id){ // 从session中获取用户信息
+        $um = UserModel::find($user_id);
+      }else{ // 从cookie中获取用户信息
+        $um = self::getUserFromCookie();
+      }
+
+      if(!$um){
+        return false;
+      }else{
+        $ue->setModel($um);
+      }
+    }
+
+    return $ue;
   }
 
+  // => false | UserModel
   private static function getUserFromCookie(){
     $uid = Cookie::get(Util::cookieTag('uid'));
     $uid = intval($uid);
