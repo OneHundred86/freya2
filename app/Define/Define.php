@@ -13,12 +13,13 @@ define('USER_BANED', 1);  // 禁用用户
 
 
 // CS交互错误码
+define('ERROR_ERR', -1);
 define('ERROR_OK', 0);
-define('ERROR_NO_LOGINED', 100);
 
-define('ERROR_USER_NO_EXIST', 200);
-define('ERROR_USER_BANED', 201);
+define('ERROR_VERICODE_ERROR', 200);
+define('ERROR_USER_NOT_EXISTS', 201);
 define('ERROR_PASSWORD_ERROR', 202);
+define('ERROR_USER_BANED', 203);
 
 
 //

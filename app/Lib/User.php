@@ -72,7 +72,7 @@ class User
   static public function checkLogin($email, $password){
     $user = UserModel::where('email', $email)->first();
     if(empty($user)){
-      return ERROR_USER_NO_EXIST;
+      return ERROR_USER_NOT_EXISTS;
     }elseif($user->ban === USER_BANED){
       return ERROR_USER_BANED;
     }
@@ -85,11 +85,11 @@ class User
   }
 
   // 检验并且登录
-  # => true | false
+  # => int | UserModel
   static public function checkAndLogin($email, $password, $keep = false){
     $user = self::checkLogin($email, $password);
     if(!$user instanceof UserModel)
-      return false;
+      return $user;
 
     Session::setLoginUserID($user->id);
 
@@ -107,7 +107,7 @@ class User
       Cookie::queue(Util::cookieTag('snap'), null, -1, $path);
     }
 
-    return true;
+    return $user;
   }
 
   // 登出

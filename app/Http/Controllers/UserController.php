@@ -37,15 +37,11 @@ class UserController extends Controller {
 		]);
 
 		if (!Vericode::checkImageVericode($request->code))
-			return $this->e('验证码错误');
+			return $this->e(ERROR_VERICODE_ERROR);
 
 		$errorCode = UserLib::checkLogin($request->email, $request->password);
-		if($errorCode === ERROR_USER_NO_EXIST)
-			return $this->e($errorCode, '用户不存在');
-		elseif($errorCode === ERROR_USER_BANED)
-			return $this->e($errorCode, '帐号已被封号，请联系管理员');
-		elseif($errorCode === ERROR_PASSWORD_ERROR)
-			return $this->e($errorCode, '密码错误');
+		if(!$errorCode instanceof UserModel)
+			return $this->e($errorCode);
 
 		return $this->o();
 	}
@@ -59,11 +55,12 @@ class UserController extends Controller {
 		]);
 
 		if (!Vericode::checkImageVericode($request->code))
-			return $this->e(1, '验证码错误');
+			return $this->e(ERROR_VERICODE_ERROR);
 
-		if (!UserLib::checkAndLogin($request->email, $request->password, $request->keep)) {
-			return $this->e(2, '帐号不存在，或者密码错误');
-		}
+		$errorCode = UserLib::checkAndLogin($request->email, $request->password, $request->keep);
+		if(!$errorCode instanceof UserModel)
+			return $this->e($errorCode);
+
 		Vericode::invalidImageVericode();
 		return redirect()->route('adminIndex');
 	}

@@ -15,11 +15,11 @@ class Controller extends BaseController
     // 自定义借口：输出json
     # code : int|mix  0成功，其他数字表示错误
     # data : mix
-    public function o($code = ERROR_OK, $data = "ok"){
+    public function o($code = ERROR_OK, $data = ""){
       return Output::o($code, $data);
     }
 
-    public function e($code = -1, $data = "error"){
+    public function e($code = ERROR_ERR, $data = ""){
       return Output::e($code, $data);
     }
 

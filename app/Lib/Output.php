@@ -13,10 +13,12 @@ class Output
   // 自定义借口：输出json
   # code : int|mix  0成功，其他数字表示错误
   # data : mix
-  public static function o($code = ERROR_OK, $data = "ok"){
+  public static function o($code = ERROR_OK, $data = ""){
     if(!is_integer($code)){
       $data = $code;
       $code = ERROR_OK;
+    }elseif(empty($data)){
+      $data = ErrCodeMsg::get($code);
     }
 
     return [
@@ -25,10 +27,10 @@ class Output
     ];
   }
 
-  public static function e($code = -1, $data = "error"){
+  public static function e($code = ERROR_ERR, $data = ""){
     if(!is_integer($code)){
       $data = $code;
-      $code = -1;
+      $code = ERROR_ERR;
     }
 
     return self::o($code, $data);
