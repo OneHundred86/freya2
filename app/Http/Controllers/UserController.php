@@ -103,14 +103,14 @@ class UserController extends Controller {
 		]);
 	}
 
-	public function add(Request $request){
+	public function add(Request $request, UserEntity $user){
 		$this->validate($request, [
 			'email'			=> 'required|email',
 			'password'	=> 'required|string',
 			'group'			=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('User.add'))
+		if(!$user->checkAuth('User.add'))
 			return $this->e(-1, '权限不足');
 
 		$email = $request->email;
@@ -124,7 +124,7 @@ class UserController extends Controller {
 		]);
 	}
 
-	public function edit(Request $request){
+	public function edit(Request $request, UserEntity $user){
 		$this->validate($request, [
 			'id'				=> 'required|integer',
 			// 'email'			=> 'required|email',
@@ -132,7 +132,7 @@ class UserController extends Controller {
 			'group'			=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('User.edit'))
+		if(!$user->checkAuth('User.edit'))
 			return $this->e(-1, '权限不足');
 
 		$email = $request->email;
@@ -153,12 +153,12 @@ class UserController extends Controller {
 		]);
 	}
 
-	public function del(Request $request){
+	public function del(Request $request, UserEntity $user){
 		$this->validate($request, [
 			'id'				=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('User.del'))
+		if(!$user->checkAuth('User.del'))
 			return $this->e(-1, '权限不足');
 
 		$m = UserModel::find($request->id);
@@ -172,13 +172,13 @@ class UserController extends Controller {
 		]);
 	}
 
-	public function changeGroup(Request $request){
+	public function changeGroup(Request $request, UserEntity $user){
 		$this->validate($request, [
 			'id'			=> 'required|integer',
 			'group'		=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('User.edit'))
+		if(!$user->checkAuth('User.edit'))
 			return $this->e(-1, '权限不足');
 
 		$m = UserModel::find($request->id);
@@ -193,13 +193,13 @@ class UserController extends Controller {
 		]);
 	}
 
-	public function ban(Request $request){
+	public function ban(Request $request, UserEntity $user){
 		$this->validate($request, [
 			'id'			=> 'required|integer',
 			'ban'			=> 'required|integer',
 		]);
 
-		if(!UserLib::checkAuth('User.edit'))
+		if(!$user->checkAuth('User.edit'))
 			return $this->e(-1, '权限不足');
 
 		$m = UserModel::find($request->id);

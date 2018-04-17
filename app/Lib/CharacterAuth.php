@@ -60,9 +60,9 @@ class CharacterAuth {
 			return self::$all;
 
 		$auths = [];
-		foreach (self::$map as $group => $info) {
+		foreach (self::$map as $module => $info) {
 			foreach ($info['auths'] as $k => $v) {
-				$auth = sprintf('%s.%s', $group, $k);
+				$auth = sprintf('%s.%s', $module, $k);
 				$auths[$auth] = $v;
 			}
 		}
@@ -70,7 +70,8 @@ class CharacterAuth {
 		return self::$all;
 	}
 
-	// $authName = sprintf('%s.%s', $group, $authKey);
+	// $auth = sprintf('%s.%s', $module, $authKey);
+	# => true | false
 	public static function has(string $auth) {
 		$all = self::all();
 		return array_key_exists($auth, $all);

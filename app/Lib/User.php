@@ -177,6 +177,7 @@ class User
 
   // 判断用户是否有指定角色权限
   # $user = integer | UserModel
+  # $auth = sprintf('%s.%s', $module, $authKey);
   # => true | false
   public static function checkCharacterAuth($user, string $auth){
     if(!$user instanceof UserModel)
@@ -194,14 +195,6 @@ class User
       return false;
 
     return in_array($auth, $auths);
-  }
-
-  // 判断当前登录用户是否有指定角色权限
-  # => true | false
-  public static function checkAuth(string $auth){
-    $user = self::getLoginUser();
-    
-    return self::checkCharacterAuth($user, $auth);
   }
 }
 

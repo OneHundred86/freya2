@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Lib\User as UserLib;
+use App\Entity\User as UserEntity;
 use App\Model\Character as CharacterModel;
 use App\Model\CharacterAuth as CharacterAuthModel;
 use App\Lib\CharacterAuth as CharacterAuthLib;
@@ -33,12 +34,12 @@ class CharacterController extends Controller
     ]);
   }
 
-  public function add(Request $request){
+  public function add(Request $request, UserEntity $user){
     $this->validate($request, [
       'name'        => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('Character.add'))
+    if(!$user->checkAuth('Character.add'))
       return $this->e(-1, '权限不足');
 
     $name = $request->name;
@@ -52,13 +53,13 @@ class CharacterController extends Controller
     ]);
   }
 
-  public function edit(Request $request){
+  public function edit(Request $request, UserEntity $user){
     $this->validate($request, [
       'id'          => 'required|integer',
       'name'        => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('Character.edit'))
+    if(!$user->checkAuth('Character.edit'))
       return $this->e(-1, '权限不足');
 
     $m = CharacterModel::find($request->id);
@@ -75,12 +76,12 @@ class CharacterController extends Controller
     ]);
   }
 
-  public function del(Request $request){
+  public function del(Request $request, UserEntity $user){
     $this->validate($request, [
       'id'          => 'required|integer',
     ]);
 
-    if(!UserLib::checkAuth('Character.del'))
+    if(!$user->checkAuth('Character.del'))
       return $this->e(-1, '权限不足');
 
     $m = CharacterModel::find($request->id);
@@ -124,13 +125,13 @@ class CharacterController extends Controller
     ]);
   }
 
-  public function addCharacterAuth(Request $request){
+  public function addCharacterAuth(Request $request, UserEntity $user){
     $this->validate($request, [
       'id'    => 'required|integer',
       'name'  => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('Character.deployAuth'))
+    if(!$user->checkAuth('Character.deployAuth'))
       return $this->e(-1, '权限不足');
 
     $character_id = $request->id;
@@ -151,13 +152,13 @@ class CharacterController extends Controller
     return $this->o();
   }
 
-  public function delCharacterAuth(Request $request){
+  public function delCharacterAuth(Request $request, UserEntity $user){
     $this->validate($request, [
       'id'    => 'required|integer',
       'name'  => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('Character.deployAuth'))
+    if(!$user->checkAuth('Character.deployAuth'))
       return $this->e(-1, '权限不足');
 
     $character_id = $request->id;

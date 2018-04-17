@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\UserGroup as UserGroupModel;
 use App\Lib\User as UserLib;
+use App\Entity\User as UserEntity;
 use App\Model\Character as CharacterModel;
 
 class UserGroupController extends Controller
@@ -32,12 +33,12 @@ class UserGroupController extends Controller
     ]);
   }
 
-  public function add(Request $request){
+  public function add(Request $request, UserEntity $user){
     $this->validate($request, [
       'name'        => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('UserGroup.addUser'))
+    if(!$user->checkAuth('UserGroup.addUser'))
       return $this->e(-1, '权限不足');
 
     $name = $request->name;
@@ -52,13 +53,13 @@ class UserGroupController extends Controller
     ]);
   }
 
-  public function edit(Request $request){
+  public function edit(Request $request, UserEntity $user){
     $this->validate($request, [
       'id'          => 'required|integer',
       'name'        => 'required|string',
     ]);
 
-    if(!UserLib::checkAuth('UserGroup.edit'))
+    if(!$user->checkAuth('UserGroup.edit'))
       return $this->e(-1, '权限不足');
 
     if($request->id == USERGROUP_ADMIN)
@@ -78,12 +79,12 @@ class UserGroupController extends Controller
     ]);
   }
 
-  public function del(Request $request){
+  public function del(Request $request, UserEntity $user){
     $this->validate($request, [
       'id'          => 'required|integer',
     ]);
 
-    if(!UserLib::checkAuth('UserGroup.del'))
+    if(!$user->checkAuth('UserGroup.del'))
       return $this->e(-1, '权限不足');
 
     if($request->id == USERGROUP_ADMIN)
@@ -117,13 +118,13 @@ class UserGroupController extends Controller
     ]);
   }
 
-  public function addCharacter(Request $request){
+  public function addCharacter(Request $request, UserEntity $user){
     $this->validate($request, [
       'id'          => 'required|integer',
       'character'   => 'required|integer',
     ]);
 
-    if(!UserLib::checkAuth('UserGroup.edit'))
+    if(!$user->checkAuth('UserGroup.edit'))
       return $this->e(-1, '权限不足');
 
     if($request->id == USERGROUP_ADMIN)
@@ -156,13 +157,13 @@ class UserGroupController extends Controller
     ]);
   }
 
-  public function delCharacter(Request $request){
+  public function delCharacter(Request $request, UserEntity $user){
     $this->validate($request, [
       'id'          => 'required|integer',
       'character'   => 'required|integer',
     ]);
 
-    if(!UserLib::checkAuth('UserGroup.edit'))
+    if(!$user->checkAuth('UserGroup.edit'))
       return $this->e(-1, '权限不足');
 
     if($request->id == USERGROUP_ADMIN)
