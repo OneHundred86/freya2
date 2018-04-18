@@ -16,10 +16,11 @@ define('USER_BANED', 1);  // 禁用用户
 define('ERROR_ERR', -1);
 define('ERROR_OK', 0);
 
-define('ERROR_VERICODE_ERROR', 200);
-define('ERROR_USER_NOT_EXISTS', 201);
-define('ERROR_PASSWORD_ERROR', 202);
-define('ERROR_USER_BANED', 203);
+define('ERROR_VERICODE_ERROR', 1200);
+define('ERROR_USER_NOT_EXISTS', 1201);
+define('ERROR_PASSWORD_ERROR', 1202);
+define('ERROR_USER_BANED', 1203);
+define('ERROR_USER_NOT_ALLOWED', 1204);
 
 
 //

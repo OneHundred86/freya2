@@ -40,7 +40,7 @@ class CharacterController extends Controller
     ]);
 
     if(!$user->checkAuth('Character.add'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     $name = $request->name;
 
@@ -60,7 +60,7 @@ class CharacterController extends Controller
     ]);
 
     if(!$user->checkAuth('Character.edit'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     $m = CharacterModel::find($request->id);
     if(!$m)
@@ -82,7 +82,7 @@ class CharacterController extends Controller
     ]);
 
     if(!$user->checkAuth('Character.del'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     $m = CharacterModel::find($request->id);
     if(!$m)
@@ -132,7 +132,7 @@ class CharacterController extends Controller
     ]);
 
     if(!$user->checkAuth('Character.deployAuth'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     $character_id = $request->id;
     $name = $request->name;
@@ -159,7 +159,7 @@ class CharacterController extends Controller
     ]);
 
     if(!$user->checkAuth('Character.deployAuth'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     $character_id = $request->id;
     $name = $request->name;

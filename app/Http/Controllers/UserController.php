@@ -111,7 +111,7 @@ class UserController extends Controller {
 		]);
 
 		if(!$user->checkAuth('User.add'))
-			return $this->e(-1, '权限不足');
+			return $this->e(ERROR_USER_NOT_ALLOWED);
 
 		$email = $request->email;
 		$password = $request->password;
@@ -133,7 +133,7 @@ class UserController extends Controller {
 		]);
 
 		if(!$user->checkAuth('User.edit'))
-			return $this->e(-1, '权限不足');
+			return $this->e(ERROR_USER_NOT_ALLOWED);
 
 		$email = $request->email;
 		$password = $request->password;
@@ -159,7 +159,7 @@ class UserController extends Controller {
 		]);
 
 		if(!$user->checkAuth('User.del'))
-			return $this->e(-1, '权限不足');
+			return $this->e(ERROR_USER_NOT_ALLOWED);
 
 		$m = UserModel::find($request->id);
 		if(!$m)
@@ -179,7 +179,7 @@ class UserController extends Controller {
 		]);
 
 		if(!$user->checkAuth('User.edit'))
-			return $this->e(-1, '权限不足');
+			return $this->e(ERROR_USER_NOT_ALLOWED);
 
 		$m = UserModel::find($request->id);
 		if(!$m)
@@ -200,7 +200,7 @@ class UserController extends Controller {
 		]);
 
 		if(!$user->checkAuth('User.edit'))
-			return $this->e(-1, '权限不足');
+			return $this->e(ERROR_USER_NOT_ALLOWED);
 
 		$m = UserModel::find($request->id);
 		if(!$m)

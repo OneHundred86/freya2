@@ -29,6 +29,9 @@ class ErrCodeMsg
       case ERROR_PASSWORD_ERROR:
         $msg = "帐号不存在或者密码错误";
         break;
+      case ERROR_USER_NOT_ALLOWED:
+        $msg = "权限不足，不允许该操作";
+        break;
       
       default:
         $msg = sprintf("未解释的错误码信息: %d", $code);

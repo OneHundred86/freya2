@@ -39,7 +39,7 @@ class UserGroupController extends Controller
     ]);
 
     if(!$user->checkAuth('UserGroup.addUser'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     $name = $request->name;
 
@@ -60,7 +60,7 @@ class UserGroupController extends Controller
     ]);
 
     if(!$user->checkAuth('UserGroup.edit'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     if($request->id == USERGROUP_ADMIN)
       return $this->e('超级管理员用户组不可修改');
@@ -85,7 +85,7 @@ class UserGroupController extends Controller
     ]);
 
     if(!$user->checkAuth('UserGroup.del'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     if($request->id == USERGROUP_ADMIN)
       return $this->e('超级管理员用户组不可删除');
@@ -125,7 +125,7 @@ class UserGroupController extends Controller
     ]);
 
     if(!$user->checkAuth('UserGroup.edit'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     if($request->id == USERGROUP_ADMIN)
       return $this->e('超级管理员用户组不可修改');
@@ -164,7 +164,7 @@ class UserGroupController extends Controller
     ]);
 
     if(!$user->checkAuth('UserGroup.edit'))
-      return $this->e(-1, '权限不足');
+      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     if($request->id == USERGROUP_ADMIN)
       return $this->e('超级管理员用户组不可修改');
