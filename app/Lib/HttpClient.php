@@ -3,6 +3,8 @@ namespace App\Lib;
 
 use Illuminate\Support\Facades\Log as Log;
 use GuzzleHttp\Client as Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Handler\CurlHandler;
 
 class HttpClient
 {
@@ -43,7 +45,9 @@ class HttpClient
   # => false | string()
   public static function request($method, $url, $params = [], $files = [], $headers = [], $allowRedirects = false){
     try{
-      $client = new Client;
+      $stack = new HandlerStack();
+      $stack->setHandler(new CurlHandler());
+      $client = new Client(['handler' => $stack]);
 
       if(empty($files)){
         $response = $client->request($method, $url, [
