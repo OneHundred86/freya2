@@ -76,3 +76,11 @@ views 下面分对应的模块，每个模块下面包含
 - @push('moduleScripts') 子页面特定所需的Js脚本
 
 
+## install
+composer install
+php artisan migrate
+php artisan tinker => User::add('freya@test.com', 'test123', MD5_STRING, 1);
+
+
+
+
