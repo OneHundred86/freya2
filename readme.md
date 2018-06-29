@@ -79,7 +79,7 @@ views 下面分对应的模块，每个模块下面包含
 ## install
 composer install
 php artisan migrate
-php artisan tinker => User::add('freya@test.com', 'test123', MD5_STRING, 1);
+php artisan tinker => User::add('freya@test.com', 'test123', RAW_STRING, 1);
 
 
 
