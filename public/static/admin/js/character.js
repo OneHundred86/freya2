@@ -70,7 +70,7 @@ $(function () {
                         map.moduleName = key;
                         map.auths = {};
                         $.each(val.auths, function (auth, desc) {
-                            map.auths[auth] = {auth: auth, desc: desc, real: key+'.'+auth};
+                            map.auths[auth] = {auth: auth, desc: desc.desc, real: key+'.'+auth};
                         })
                     });
 
