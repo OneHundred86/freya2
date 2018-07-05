@@ -39,9 +39,6 @@ class CharacterController extends Controller
       'name'        => 'required|string',
     ]);
 
-    if(!$user->checkAuth('Character.add'))
-      return $this->e(ERROR_USER_NOT_ALLOWED);
-
     $name = $request->name;
 
     $m = new CharacterModel;
@@ -58,9 +55,6 @@ class CharacterController extends Controller
       'id'          => 'required|integer',
       'name'        => 'required|string',
     ]);
-
-    if(!$user->checkAuth('Character.edit'))
-      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     $m = CharacterModel::find($request->id);
     if(!$m)
@@ -80,9 +74,6 @@ class CharacterController extends Controller
     $this->validate($request, [
       'id'          => 'required|integer',
     ]);
-
-    if(!$user->checkAuth('Character.del'))
-      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     $m = CharacterModel::find($request->id);
     if(!$m)
@@ -131,9 +122,6 @@ class CharacterController extends Controller
       'name'  => 'required|string',
     ]);
 
-    if(!$user->checkAuth('Character.deployAuth'))
-      return $this->e(ERROR_USER_NOT_ALLOWED);
-
     $character_id = $request->id;
     $name = $request->name;
 
@@ -157,9 +145,6 @@ class CharacterController extends Controller
       'id'    => 'required|integer',
       'name'  => 'required|string',
     ]);
-
-    if(!$user->checkAuth('Character.deployAuth'))
-      return $this->e(ERROR_USER_NOT_ALLOWED);
 
     $character_id = $request->id;
     $name = $request->name;

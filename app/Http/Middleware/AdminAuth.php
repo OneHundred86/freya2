@@ -4,7 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Model\LogAccess;
+use App\Lib\CharacterAuth;
+use App\Lib\Output;
 use App\Lib\User as UserLib;
+use Response;
 
 class AdminAuth
 {
@@ -23,11 +26,18 @@ class AdminAuth
             // die();
         }
 
+        $path = $request->path();
+        $auth = CharacterAuth::getAuthByRoute($path);
+        if($auth){
+            if(!$user->checkAuth($auth))
+                return Response::make(Output::e(ERROR_USER_NOT_ALLOWED));
+        }
+
         // access log
         $log = new LogAccess;
         $log->type = 'admin';
         $log->user_id = $user->id;
-        $log->api = $request->path();
+        $log->api = $path;
         $log->params = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
         $log->ip = $request->ip();
         $log->save();

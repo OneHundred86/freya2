@@ -110,9 +110,6 @@ class UserController extends Controller {
 			'group'			=> 'required|integer',
 		]);
 
-		if(!$user->checkAuth('User.add'))
-			return $this->e(ERROR_USER_NOT_ALLOWED);
-
 		$email = $request->email;
 		$password = $request->password;
 		$group = $request->group;
@@ -131,9 +128,6 @@ class UserController extends Controller {
 			'password'	=> 'required|string',
 			'group'			=> 'required|integer',
 		]);
-
-		if(!$user->checkAuth('User.edit'))
-			return $this->e(ERROR_USER_NOT_ALLOWED);
 
 		$email = $request->email;
 		$password = $request->password;
@@ -158,9 +152,6 @@ class UserController extends Controller {
 			'id'				=> 'required|integer',
 		]);
 
-		if(!$user->checkAuth('User.del'))
-			return $this->e(ERROR_USER_NOT_ALLOWED);
-
 		$m = UserModel::find($request->id);
 		if(!$m)
 			return $this->e('用户信息不存在');
@@ -177,9 +168,6 @@ class UserController extends Controller {
 			'id'			=> 'required|integer',
 			'group'		=> 'required|integer',
 		]);
-
-		if(!$user->checkAuth('User.edit'))
-			return $this->e(ERROR_USER_NOT_ALLOWED);
 
 		$m = UserModel::find($request->id);
 		if(!$m)
@@ -198,9 +186,6 @@ class UserController extends Controller {
 			'id'			=> 'required|integer',
 			'ban'			=> 'required|integer',
 		]);
-
-		if(!$user->checkAuth('User.edit'))
-			return $this->e(ERROR_USER_NOT_ALLOWED);
 
 		$m = UserModel::find($request->id);
 		if(!$m)
