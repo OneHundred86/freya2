@@ -48,6 +48,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // 自定义处理的异常http状态码列表
+        $statusCodes = [404];
+        if($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException && 
+            in_array($exception->getStatusCode(), $statusCodes)){
+            return response()->view('error.'.$exception->getStatusCode(), [], $exception->getStatusCode());
+        }
+
         return parent::render($request, $exception);
     }
 }

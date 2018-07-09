@@ -29,8 +29,12 @@ class AdminAuth
         $path = $request->path();
         $auth = CharacterAuth::getAuthByRoute($path);
         if($auth){
-            if(!$user->checkAuth($auth))
-                return Response::make(Output::e(ERROR_USER_NOT_ALLOWED));
+            if(!$user->checkAuth($auth)){
+                if($request->isMethod('GET'))
+                    return Response::view('error.not_allowed');
+                else
+                    return Response::make(Output::e(ERROR_USER_NOT_ALLOWED));
+            }
         }
 
         // access log
