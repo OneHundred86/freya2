@@ -27,9 +27,6 @@ Route::group(
 		Route::get('/admin/login', 'UserController@loginPage')->name('adminLogin');
 		Route::post('/admin/checkLogin', 'UserController@checkLogin');
 		Route::post('/admin/login', 'UserController@login');
-
-		Route::get('/error/noauth', 'ErrorController@noauth');
-
 	}
 );
 
