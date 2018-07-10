@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -48,13 +49,24 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // 自定义处理的异常http状态码列表
-        $statusCodes = [404];
-        if($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException && 
-            in_array($exception->getStatusCode(), $statusCodes)){
-            return response()->view('error.'.$exception->getStatusCode(), [], $exception->getStatusCode());
+        if($exception instanceof HttpException){
+            $statusCode = $exception->getStatusCode();
+
+            // 自定义处理的异常http状态码列表
+            $statusCodes = [404];
+            if(in_array($statusCode, $statusCodes)){
+                return $this->view("error.$statusCode", $request, $statusCode);
+                // return view('error.'.$exception->getStatusCode());
+            }
         }
 
         return parent::render($request, $exception);
+    }
+
+    public function view($view, $request, int $statusCode){
+        $data['app_url'] = env('APP_URL');
+        $data['version'] = env('VERSION');
+        $data['title'] = env('APP_TITLE', 'freya2.0');
+        return response()->view($view, $data, $statusCode);
     }
 }

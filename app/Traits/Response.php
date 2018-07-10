@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Lib\Output;
+use View;
 
 trait Response{
   // 自定义借口：输出json
@@ -20,7 +21,7 @@ trait Response{
     $data['app_url'] = env('APP_URL');
     $data['version'] = env('VERSION');
     if (!isset($data['title'])) {
-      $data['title'] = 'Freya2.0';
+      $data['title'] = env('APP_TITLE', 'Freya2.0');
     }
     return view($view, $data, $mergeData);
   }

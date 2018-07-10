@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>找不到该页面 404</title>
+  
+  <title>{{ $title }}</title>
   <style>
     body {
       color: #666;
