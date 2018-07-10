@@ -5,9 +5,11 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Traits\Response as ResponseTrait;
 
 class Handler extends ExceptionHandler
 {
+    use ResponseTrait;
     /**
      * A list of the exception types that are not reported.
      *
@@ -55,18 +57,11 @@ class Handler extends ExceptionHandler
             // 自定义处理的异常http状态码列表
             $statusCodes = [404];
             if(in_array($statusCode, $statusCodes)){
-                return $this->view("error.$statusCode", $request, $statusCode);
+                return $this->simpleView("error.$statusCode", [], $statusCode);
                 // return view('error.'.$exception->getStatusCode());
             }
         }
 
         return parent::render($request, $exception);
-    }
-
-    public function view($view, $request, int $statusCode){
-        $data['app_url'] = env('APP_URL');
-        $data['version'] = env('VERSION');
-        $data['title'] = env('APP_TITLE', 'freya2.0');
-        return response()->view($view, $data, $statusCode);
     }
 }

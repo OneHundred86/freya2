@@ -32,9 +32,10 @@ class AdminAuth
         if($auth){
             if(!$user->checkAuth($auth)){
                 if($request->isMethod('GET'))
-                    return $this->view('error.not_allowed');
+                    // return $this->view('error.not_allowed');
+                    return $this->simpleView('error.not_allowed');
                 else
-                    return response()->make($this->e(ERROR_USER_NOT_ALLOWED));
+                    return $this->e(ERROR_USER_NOT_ALLOWED);
             }
         }
 

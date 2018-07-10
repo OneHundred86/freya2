@@ -4,7 +4,7 @@
 @section('app')
     <div class="error-frame">
         <div class="msg-frame">
-            页面不存在
+            404 页面不存在
         </div>
         <div class="error-bottom">
             <a class="link a" href="/">首页</a>
