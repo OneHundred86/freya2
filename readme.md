@@ -1,63 +1,3 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
-
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
-
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
 
 ## For front end
 
@@ -75,6 +15,99 @@ views 下面分对应的模块，每个模块下面包含
 - @push('moduleStyles') 子页面特定所需的样式表
 - @push('moduleScripts') 子页面特定所需的Js脚本
 
+
+## 服务器部署
+假设域名为：test.com，代码部署在/var/www/test/；
+
+1.配置.env
+APP_DEBUG=false
+APP_URL=http://test.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=xxx
+DB_USERNAME=xxx
+DB_PASSWORD=xxx
+
+CACHE_DRIVER=redis
+QUEUE_DRIVER=redis
+
+2.用户权限
+a、修改文件夹权限
+chown -R www:www storage
+
+b、修改nginx和php-fpm执行用户为www
+
+3.nginx
+server {
+    listen       80;
+    server_name  test.com;
+
+    charset utf8;
+
+    #access_log  logs/host.access.log  main;
+
+    index index.html index.htm index.php;
+
+    root /var/www/test/public;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    access_log /var/log/nginx/jcapp-access.log;
+    error_log  /var/log/nginx/jcapp-error.log error;
+
+    sendfile off;
+
+    client_max_body_size 100m;
+    client_body_timeout  300;
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    location ~ \.php$ {
+        fastcgi_pass   unix:/run/php/php7.2-fpm.sock;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #include        fastcgi_params;
+        include        fastcgi.conf;
+    }
+
+    # deny access to .htaccess files, if Apache's document root
+    location ~ /\.git {
+        deny  all;
+    }
+}
+
+3.限制文件上传大小(可选)
+编辑php.ini
+    upload_max_filesize 100M
+    post_max_size       100M
+    max_execution_time  300
+
+4.配置supervisor(可选) -- 队列
+[program:freya-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/test/artisan queue:work --tries=3 --daemon --queue --timeout=300
+autostart=true
+autorestart=true
+user=www
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/var/www/test/storage/logs/supervisor.log
+
+5.配置定时器(可选)  crontab -e -u www
+* * * * * php /var/www/test/artisan schedule:run >> /dev/null 2>&1
+
+6.生成env的key
+php artisan key:generate
+
+7.迁移数据库
+php artisan migrate
 
 ## install
 composer install
