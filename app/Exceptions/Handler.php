@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
             $statusCode = $exception->getStatusCode();
 
             // 自定义处理的异常http状态码列表
-            $statusCodes = [404];
+            $statusCodes = [403,404];
             if(in_array($statusCode, $statusCodes)){
                 return $this->simpleView("error.$statusCode", [], $statusCode);
                 // return view('error.'.$exception->getStatusCode());
