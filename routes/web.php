@@ -21,7 +21,7 @@ Route::group(
 	],
 	function () {
 		// debug
-		// Route::get('debug/session', 'DebugController@session');
+		Route::get('debug/session', 'DebugController@session');
 		//
 		Route::get('/vericode/image', 'VericodeController@genImage');
 		Route::get('/admin/login', 'UserController@loginPage')->name('adminLogin');
