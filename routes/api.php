@@ -12,13 +12,13 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+// private api
 Route::group(
   [
     'middleware' => 'privateApi',
     'prefix' => 'private',
   ],
   function(){
-    Route::any('/test', 'DebugController@session');
+    
   }
 );
