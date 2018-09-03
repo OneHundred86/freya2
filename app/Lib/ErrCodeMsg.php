@@ -12,32 +12,36 @@ class ErrCodeMsg
   public static function get(int $code){
     switch ($code) {
       case ERROR_OK:
-        $msg = "ok";
-        break;
+        return 'ok';
       case ERROR_ERR:
-        $msg = "error";
-        break;
+        return 'error';
       case ERROR_VERICODE_ERROR:
-        $msg = "验证码错误";
-        break;
+        return '验证码错误';
       case ERROR_USER_NOT_EXISTS:
-        $msg = "帐号不存在或者密码错误";
-        break;
+        return '帐号不存在或者密码错误';
       case ERROR_USER_BANED:
-        $msg = "用户帐号已被冻结，请联系管理员";
-        break;
+        return '用户帐号已被冻结，请联系管理员';
       case ERROR_PASSWORD_ERROR:
-        $msg = "帐号不存在或者密码错误";
-        break;
+        return '帐号不存在或者密码错误';
       case ERROR_USER_NOT_ALLOWED:
-        $msg = "权限不足，不允许该操作";
-        break;
+        return '权限不足，不允许该操作';
+      case ERROR_PRIVATEAPI_TIME_EMPTY:
+        return '需要时间参数';
+      case ERROR_PRIVATEAPI_APP_EMPTY:
+        return '需要app参数';
+      case ERROR_PRIVATEAPI_TOKEN_EMPTY:
+        return '需要token参数';
+      case ERROR_PRIVATEAPI_APP_NOT_EXIST:
+        return 'app信息不存在';
+      case ERROR_PRIVATEAPI_TIME_INVALID:
+        return '时间不合法';
+      case ERROR_PRIVATEAPI_TOKEN_INVALID:
+        return 'token不合法';
+      case ERROR_PRIVATEAPI_API_NOT_ALLOW:
+        return 'api不允许访问';
       
       default:
-        $msg = sprintf("未解释的错误码信息: %d", $code);
-        break;
+        return sprintf('未解释的错误码信息: %d', $code);
     }
-
-    return $msg;
   }
 }

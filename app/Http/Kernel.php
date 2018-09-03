@@ -60,5 +60,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         // 自定义
         'adminAuth' => \App\Http\Middleware\AdminAuth::class,
+        'privateApi' => \App\Http\Middleware\PrivateApi::class,
     ];
 }
