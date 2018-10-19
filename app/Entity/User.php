@@ -7,20 +7,11 @@ use App\Lib\User as UserLib;
 /**
 * 当前登录的用户实体
 */
-class User extends UserModel
+class User extends EntityBase
 {
   public $exists = true;
   
   public function __construct(){
-  }
-
-  public function setModel(UserModel $user){
-    $this->id = $user->id;
-    $this->email = $user->email;
-    $this->password = $user->password;
-    $this->salt = $user->salt;
-    $this->group = $user->group;
-    $this->ban = $user->ban;
   }
 
   // 判断用户是否有指定角色权限

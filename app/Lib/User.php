@@ -146,14 +146,17 @@ class User
   }
 
   // 获取用户的所有角色权限
-  # $user = integer | UserModel
+  # $user = integer | UserEntity
   # => false | [string()]
   public static function getCharacterAuths($user){
-    if(!$user instanceof UserModel)
-      $user = UserModel::find($user);
+    if(!$user instanceof UserEntity){
+      $um = UserModel::find($user);
+      if(!$um)
+        return false;
 
-    if(!$user)
-      return false;
+      $user = new UserEntity;
+      $user->setModel($um);
+    }
 
     if($user->group === USERGROUP_ADMIN){
       $auths = CharacterAuthLib::all();
@@ -176,15 +179,19 @@ class User
   }
 
   // 判断用户是否有指定角色权限
-  # $user = integer | UserModel
+  # $user = integer | UserEntity
   # $auth = sprintf('%s.%s', $module, $authKey);
   # => true | false
   public static function checkCharacterAuth($user, string $auth){
-    if(!$user instanceof UserModel)
-      $user = UserModel::find($user);
+    if(!$user instanceof UserEntity){
+      $um = UserModel::find($user);
+      if(!$um)
+        return false;
 
-    if(!$user)
-      return false;
+      $user = new UserEntity;
+      $user->setModel($um);
+    }
+
     // 特殊指定，超级管理员的用户组为1
     if($user->group === USERGROUP_ADMIN)
       return true;
