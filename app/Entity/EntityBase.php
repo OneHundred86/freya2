@@ -24,6 +24,6 @@ class EntityBase{
   }
 
   public function __set($property, $val){
-    $this->$property = $val;
+    $this->model->$property = $val;
   }
 }
