@@ -12,6 +12,10 @@ class EntityBase{
     $this->model = $model;
   }
 
+  public function getModel(){
+    return $this->model;
+  }
+
   public function save(){
     return $this->model->save();
   }
@@ -25,5 +29,9 @@ class EntityBase{
 
   public function __set($property, $val){
     $this->model->$property = $val;
+  }
+
+  public function __toString(){
+    return $this->model->toJson();
   }
 }
