@@ -27,6 +27,9 @@ class AdminAuth
             // die();
         }
 
+        if($user->ban != USER_UNBAN)
+            return $this->e(ERROR_USER_BANED);
+
         $path = $request->path();
         $auth = CharacterAuth::getAuthByRoute($path);
         if($auth){
