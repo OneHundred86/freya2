@@ -34,4 +34,8 @@ class EntityBase{
   public function __toString(){
     return $this->model->toJson();
   }
+
+  public function __call($func, $args){
+    return $this->model->$func(...$args);
+  }
 }

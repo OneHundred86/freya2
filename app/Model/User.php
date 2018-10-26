@@ -5,6 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Lib\User as UserLib;
+use App\Entity\User as UserEntity;
 
 class User extends Model
 {
@@ -37,6 +38,13 @@ class User extends Model
     $this->save();
 
     return parent::delete();
+  }
+
+  // => UserEntity
+  public function toUserEntity(){
+    $ue = new UserEntity;
+    $ue->setModel($this);
+    return $ue;
   }
 
 }
