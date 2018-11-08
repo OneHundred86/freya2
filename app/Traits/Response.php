@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Lib\Output;
+use App\Lib\ErrCodeMsg;
 
 trait Response{
   // 自定义借口：输出json
@@ -13,6 +14,14 @@ trait Response{
 
   public function e($code = ERROR_ERR, $data = ""){
     return response()->make(Output::e($code, $data));
+  }
+
+  # $msg : int|string
+  public function errorPage($msg = ERROR_ERR){
+    if(is_integer($msg))
+      $msg = ErrCodeMsg::get($msg);
+
+    return $this->simpleView('error/error', ['error_msg' => $msg]);
   }
 
 

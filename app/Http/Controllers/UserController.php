@@ -90,12 +90,13 @@ class UserController extends Controller {
 		$offset = $request->offset;
 		$limit = $request->limit;
 
+		$builder = UserModel::query();
+
 		if($group)
 			$builder = UserModel::where('group', $group);
-		else
-			$builder = new UserModel;
 
-		$builder->where('email', 'like', "%$kw%");
+		if($kw)
+			$builder->where('email', 'like', "%$kw%");
 
 		return $this->o([
 			'total' => $builder->count(),

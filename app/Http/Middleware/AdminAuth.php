@@ -27,16 +27,22 @@ class AdminAuth
             // die();
         }
 
-        if($user->ban != USER_UNBAN)
-            return $this->e(ERROR_USER_BANED);
+        $isGetMethod = $request->isMethod('GET');
+
+        if($user->ban != USER_UNBAN){
+            if($isGetMethod)
+                return $this->errorPage(ERROR_USER_BANED);
+            else
+                return $this->e(ERROR_USER_BANED);
+        }
 
         $path = $request->path();
         $auth = CharacterAuth::getAuthByRoute($path);
         if($auth){
             if(!$user->checkAuth($auth)){
-                if($request->isMethod('GET'))
+                if($isGetMethod)
                     // return $this->view('error.not_allowed');
-                    return $this->simpleView('error.not_allowed');
+                    return $this->errorPage(ERROR_USER_BANED);
                 else
                     return $this->e(ERROR_USER_NOT_ALLOWED);
             }
