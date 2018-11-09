@@ -20,6 +20,21 @@ class Util
     return self::appTag($name . '@cookie');
   }
 
+  public static function genUrl($url, array $params = []){
+    if(!$params)
+      return $url;
+    
+    if(strpos($url, '?') === false){
+      $url .= '?';
+    }else{
+      $url .= '&';
+    }
+
+    $url .= http_build_query($params);
+
+    return $url;
+  }
+
 }
 
 
