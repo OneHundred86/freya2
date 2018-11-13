@@ -41,8 +41,7 @@ class AdminAuth
         if($auth){
             if(!$user->checkAuth($auth)){
                 if($isGetMethod)
-                    // return $this->view('error.not_allowed');
-                    return $this->errorPage(ERROR_USER_BANED);
+                    return $this->errorPage(ERROR_USER_NOT_ALLOWED);
                 else
                     return $this->e(ERROR_USER_NOT_ALLOWED);
             }

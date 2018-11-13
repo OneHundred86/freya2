@@ -54,12 +54,8 @@ class Handler extends ExceptionHandler
         if($exception instanceof HttpException){
             $statusCode = $exception->getStatusCode();
 
-            // 自定义处理的异常http状态码列表
-            $statusCodes = [403,404];
-            if(in_array($statusCode, $statusCodes)){
-                return $this->simpleView("error.$statusCode", [], $statusCode);
-                // return view('error.'.$exception->getStatusCode());
-            }
+            // 自定义处理的异常http状态码页面
+            return $this->errorPage($statusCode);
         }
 
         return parent::render($request, $exception);

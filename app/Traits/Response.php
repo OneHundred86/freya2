@@ -17,11 +17,11 @@ trait Response{
   }
 
   # $msg : int|string
-  public function errorPage($msg = ERROR_ERR){
+  public function errorPage($msg = ERROR_ERR, $errorView = 'error'){
     if(is_integer($msg))
       $msg = ErrCodeMsg::get($msg);
 
-    return $this->simpleView('error/error', ['error_msg' => $msg]);
+    return $this->simpleView("error/$errorView", ['error_msg' => $msg]);
   }
 
 

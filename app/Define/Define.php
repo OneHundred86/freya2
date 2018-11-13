@@ -12,7 +12,7 @@ define('USER_BANED', 1);  // 禁用用户
 
 
 
-// CS交互错误码
+// CS交互错误码(不能占用http状态码100~599)
 define('ERROR_ERR', -1);
 define('ERROR_OK', 0);
 

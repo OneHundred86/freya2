@@ -15,6 +15,10 @@ class ErrCodeMsg
         return 'ok';
       case ERROR_ERR:
         return 'error';
+      case 403:
+        return '403 forbidden';
+      case 404:
+        return '404 页面不存在';
       case ERROR_VERICODE_ERROR:
         return '验证码错误';
       case ERROR_USER_NOT_EXISTS:
