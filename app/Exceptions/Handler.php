@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
             $statusCode = $exception->getStatusCode();
 
             // 自定义处理的异常http状态码页面
-            return $this->errorPage($statusCode);
+            return $this->errorPage($statusCode, 'error', $statusCode);
         }
 
         return parent::render($request, $exception);
