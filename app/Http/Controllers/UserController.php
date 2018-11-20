@@ -62,12 +62,12 @@ class UserController extends Controller {
 			return $this->e($errorCode);
 
 		Vericode::invalidImageVericode();
-		return redirect()->route('adminIndex');
+		return $this->redirect('adminIndex');
 	}
 
 	public function logout(Request $request) {
 		UserLib::logout();
-		return redirect()->route('adminLogin');
+		return $this->redirect('adminLogin');
 	}
 
 	public function info(Request $request, UserEntity $user) {

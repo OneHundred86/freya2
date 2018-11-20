@@ -23,8 +23,7 @@ class AdminAuth
     {
         $user = UserLib::getLoginUser();
         if(empty($user)){
-            return redirect()->route('adminLogin');
-            // die();
+            return $this->redirect('adminLogin');
         }
 
         $isGetMethod = $request->isMethod('GET');

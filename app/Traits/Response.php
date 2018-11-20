@@ -43,5 +43,15 @@ trait Response{
     return response()->view($view, $data, $statusCode);
   }
 
+  public function redirect($routeName, $params = [], $absolute = true){
+    $uri = route($routeName, $params, false);
+
+    if($absolute){
+      $uri = env('APP_URL') . $uri;
+    }
+
+    return redirect($uri);
+  }
+
 }
 
