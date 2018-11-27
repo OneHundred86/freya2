@@ -15,6 +15,7 @@ class CharacterAuth extends Migration
     {
         // 角色权限表
         Schema::create('character_auth', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedInteger('character_id')->comment('角色id');
             $table->string('name')->comment('权限名');
             $table->index('character_id');
