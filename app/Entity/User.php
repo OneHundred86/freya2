@@ -9,8 +9,6 @@ use App\Lib\User as UserLib;
 */
 class User extends EntityBase
 {
-  public $exists = true;
-  
   public function __construct(){
   }
 
