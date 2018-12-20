@@ -14,8 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-        // echo "boot";
+        // 修改根目录url
+        app('url')->forceRootUrl(env('APP_URL'));
     }
 
     /**
