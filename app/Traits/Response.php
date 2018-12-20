@@ -43,14 +43,40 @@ trait Response{
     return response()->view($view, $data, $statusCode);
   }
 
-  public function redirect($routeName, $params = [], $absolute = true){
+  // 由路由名生成uri
+  public function route($routeName, $params = [], $absolute = true){
     $uri = route($routeName, $params, false);
 
     if($absolute){
       $uri = env('APP_URL') . $uri;
     }
 
+    return $uri;
+  }
+
+  // 重定向到路由名
+  public function redirect($routeName, $params = [], $absolute = true){
+    $uri = $this->route($routeName, $params, $absolute);
+
     return redirect($uri);
+  }
+
+  // 重定向到路由路径
+  public function redirectPath($path, $params = [], $absolute = true){
+    $uri = Util::genUrl($path, $params);
+
+    if($absolute){
+      $uri = env('APP_URL') . $uri;
+    }
+
+    return redirect($uri);
+  }
+
+  // 重定向到url
+  public function redirectUrl($url, $params = []){
+    $url = Util::genUrl($url, $params);
+
+    return redirect($url);
   }
 
 }

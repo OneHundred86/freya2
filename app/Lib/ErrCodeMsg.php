@@ -19,6 +19,10 @@ class ErrCodeMsg
         return '403 forbidden';
       case 404:
         return '404 页面不存在';
+      case 405:
+        return '405 method not allowed';
+      case 419:
+        return '419 token过期，请刷新重试';
       case ERROR_VERICODE_ERROR:
         return '验证码错误';
       case ERROR_USER_NOT_EXISTS:
