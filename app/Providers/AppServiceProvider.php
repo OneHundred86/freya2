@@ -14,8 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // 修改根目录url
-        app('url')->forceRootUrl(env('APP_URL'));
+        // 修改root url
+        $url = env('APP_URL');
+        \URL::forceRootUrl($url);
+        \URL::forceScheme(substr($url, 0, strpos($url, ':')));
     }
 
     /**
