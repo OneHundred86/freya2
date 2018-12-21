@@ -62,7 +62,7 @@ class PrivateApi
 
         $ip = $request->ip();
         if(!$m->is_ip_allow($ip))
-            return ERROR_PRIVATEAPI_IP_NOT_ALLOW
+            return ERROR_PRIVATEAPI_IP_NOT_ALLOW;
 
         # 客户端得遵照这个格式生成token
         $tokenValid = md5($app . $time . $m->ticket);
