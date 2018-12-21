@@ -34,6 +34,7 @@ class PrivateApi extends Model
   }
 
   // 判断ip是否允许访问
+  # => true | false
   public function is_ip_allow($ip){
     if(empty($this->ip_allow))
       return false;
