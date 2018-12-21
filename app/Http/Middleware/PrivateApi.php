@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Traits\Response as ResponseTrait;
 use App\Model\PrivateApi as PrivateApiModel;
+use App\Model\LogPrivateApi as LogPrivateApiModel;
 
 class PrivateApi
 {
@@ -22,6 +23,14 @@ class PrivateApi
         if($code !== true){
             return $this->e($code);;
         }
+
+        // access log
+        $log = new LogPrivateApiModel;
+        $log->app = $request->app;
+        $log->api = $request->path();
+        $log->params = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
+        $log->ip = $request->ip();
+        $log->save();
         
         return $next($request);
     }
@@ -50,6 +59,10 @@ class PrivateApi
         $api = $request->path();
         if(!$m->is_api_exist($api))
             return ERROR_PRIVATEAPI_API_NOT_ALLOW;
+
+        $ip = $request->ip();
+        if(!$m->is_ip_allow($ip))
+            return ERROR_PRIVATEAPI_IP_NOT_ALLOW
 
         # 客户端得遵照这个格式生成token
         $tokenValid = md5($app . $time . $m->ticket);

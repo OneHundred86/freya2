@@ -47,6 +47,8 @@ class ErrCodeMsg
         return 'token不合法';
       case ERROR_PRIVATEAPI_API_NOT_ALLOW:
         return 'api不允许访问';
+      case ERROR_PRIVATEAPI_IP_NOT_ALLOW:
+        return 'ip不允许访问';
       
       default:
         return sprintf('未解释的错误码信息: %d', $code);

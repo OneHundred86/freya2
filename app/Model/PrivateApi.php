@@ -32,4 +32,18 @@ class PrivateApi extends Model
     $list = $this->get_apis();
     return in_array($api, $list);
   }
+
+  // 判断ip是否允许访问
+  public function is_ip_allow($ip){
+    if(empty($this->ip_allow))
+      return false;
+
+    if($this->ip_allow == 'all')
+      return true;
+
+    return in_array($ip, explode(',', $this->ip_allow));
+  }
 }
+
+
+

@@ -17,6 +17,8 @@ class PrivateApi extends Migration
             $table->string('app')->primary();
             $table->string('ticket')->comment('票据');
             $table->text('api_list')->nullable()->comment('api列表，以“,”隔开,all表示全部');
+            $table->text('ip_allow')->nullable()->comment('ip白名单，以“,”隔开,all表示全部');
+            $table->string('note')->nullable();
         });
     }
 
