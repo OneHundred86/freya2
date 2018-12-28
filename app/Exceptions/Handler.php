@@ -5,6 +5,9 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Validation\ValidationException;
+use \Symfony\Component\Debug\Exception\FatalErrorException;
+use Illuminate\Session\TokenMismatchException;
 use App\Traits\Response as ResponseTrait;
 
 class Handler extends ExceptionHandler
@@ -51,11 +54,29 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // dd($exception);
+        $isGetMethod = $request->isMethod('GET');
         if($exception instanceof HttpException){
             $statusCode = $exception->getStatusCode();
-
             // 自定义处理的异常http状态码页面
-            return $this->errorPage($statusCode, 'error', $statusCode);
+            if($isGetMethod)
+                return $this->errorPage($statusCode, 'error', $statusCode);
+            else
+                return $this->e($statusCode);
+        }
+
+        if($exception instanceof TokenMismatchException){
+            // 自定义处理的异常http状态码页面
+            $statusCode = 419;
+            return $this->e($statusCode);
+        }
+
+        if($exception instanceof FatalErrorException && !env('APP_DEBUG')){
+            // 自定义处理的异常http状态码页面
+            if($isGetMethod)
+                return $this->errorPage(500, 'error', 500);
+            else
+                return $this->e(500);
         }
 
         return parent::render($request, $exception);
