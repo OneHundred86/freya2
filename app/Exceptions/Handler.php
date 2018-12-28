@@ -73,10 +73,11 @@ class Handler extends ExceptionHandler
 
         if($exception instanceof FatalErrorException && !env('APP_DEBUG')){
             // 自定义处理的异常http状态码页面
+            $statusCode = 500;
             if($isGetMethod)
-                return $this->errorPage(500, 'error', 500);
+                return $this->errorPage($statusCode, 'error', $statusCode);
             else
-                return $this->e(500);
+                return $this->e($statusCode);
         }
 
         return parent::render($request, $exception);
