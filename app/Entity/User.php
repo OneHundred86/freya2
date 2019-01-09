@@ -9,7 +9,17 @@ use App\Lib\User as UserLib;
 */
 class User extends EntityBase
 {
-  public function __construct(){
+  # $user :: int | UserModel
+  public function __construct($user = null){
+    if(is_integer($user)){
+      $um = UserModel::find($user);
+      if(!$um)
+        throw new \Exception("用户信息不存在", 1);
+      
+      $this->setModel($um);
+    }elseif($user instanceof UserModel){
+      $this->setModel($user);
+    }
   }
 
   // 判断用户是否有指定角色权限

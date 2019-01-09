@@ -39,8 +39,13 @@ class Util
     if(!$str)
       return $str;
 
-    return str_ireplace(['<script', '<style', '<link', '</script', '</style', '<img'], 
-      ['<noscript', '<nostyle', '<nolink', '</noscript', '</nostyle', '<noimg'], $str);
+    return str_ireplace(
+      ['<script', '<style', '<link', '</script', '</style', '<img', '<svg',
+      '<iframe', '<form', '<input', '<audio', '<video', '<source', '</source',
+      '<select', '<keygen', '<textarea', '</textarea'], 
+      ['<noscript', '<nostyle', '<nolink', '</noscript', '</nostyle', '<noimg', '<nosvg', 
+      '<noiframe', '<noform', '<noinput', '<noaudio', '<novideo', '<nosource', '</source',
+      '<noselect', '<nokeygen', '<notextarea', '</notextarea'], $str);
   }
 
   public static function filt_html($str){
