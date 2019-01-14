@@ -112,7 +112,7 @@ class User
 
   // 登出
   static public function logout(){
-    Session::eraseLoginUserID();
+    Session::flush();
   }
 
   # => string()

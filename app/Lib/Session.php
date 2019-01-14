@@ -7,22 +7,10 @@ namespace App\Lib;
 
 class Session
 {
-  #################### 公共借口函数 #######################
-  static public function get($key, $default = null){
-    return session()->get($key, $default);
-  }
-
-  static public function put($key, $val){
-    session()->put([$key => $val]);
-  }
-
-  static public function pull($key, $default = null){
-    return session()->pull($key, $default);
-  }
-
-  static public function forget($key){
-    session()->forget($key);
-  }
+  #################### 公共接口函数 #######################
+    public static function __callStatic($method, $params){
+      return \call_user_func_array([session(), $method], $params);
+    }
 
   ################### 当前登录用户id ########################
   static public function getLoginUserID(){

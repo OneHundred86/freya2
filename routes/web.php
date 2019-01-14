@@ -24,9 +24,9 @@ Route::group(
 		Route::get('debug/session', 'DebugController@session');
 		//
 		Route::get('/vericode/image', 'VericodeController@genImage');
-		Route::get('/admin/login', 'UserController@loginPage')->name('adminLogin');
-		Route::post('/admin/checkLogin', 'UserController@checkLogin');
-		Route::post('/admin/login', 'UserController@login');
+		Route::get('/admin/login', 'AdminController@loginPage')->name('adminLogin');
+		Route::post('/admin/checkLogin', 'AdminController@checkLogin');
+		Route::post('/admin/login', 'AdminController@login');
 	}
 );
 
@@ -37,9 +37,9 @@ Route::group(
 		'prefix' => 'admin'
 	],
 	function () {
-		Route::get('/', 'UserController@index')->name('adminIndex');
-		Route::get('/main', 'UserController@main');
-		Route::get('/logout', 'UserController@logout');
+		Route::get('/', 'AdminController@index')->name('adminIndex');
+		Route::get('/main', 'AdminController@main');
+		Route::get('/logout', 'AdminController@logout');
 
 		// 用户
 		Route::get('/user', 'UserController@userPage');
