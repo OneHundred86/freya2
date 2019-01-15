@@ -57,11 +57,11 @@ class PrivateApi
             return ERROR_PRIVATEAPI_APP_NOT_EXIST;
 
         $api = $request->path();
-        if(!$m->is_api_exist($api))
+        if(!$m->isApiExist($api))
             return ERROR_PRIVATEAPI_API_NOT_ALLOW;
 
         $ip = $request->ip();
-        if(!$m->is_ip_allow($ip))
+        if(!$m->isIpAllow($ip))
             return ERROR_PRIVATEAPI_IP_NOT_ALLOW;
 
         # 客户端得遵照这个格式生成token

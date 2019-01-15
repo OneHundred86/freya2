@@ -14,7 +14,7 @@ class PrivateApi extends Model
 
   // 获取api列表
   # => array()
-  public function get_apis(){
+  public function getApiList(){
     if(empty($this->api_list))
       return [];
 
@@ -24,18 +24,18 @@ class PrivateApi extends Model
 
   // 判断api是否存在于api_list
   # => true | false
-  public function is_api_exist($api){
+  public function isApiExist($api){
     if($this->api_list == 'all'){
       return true;
     }
     
-    $list = $this->get_apis();
+    $list = $this->getApiList();
     return in_array($api, $list);
   }
 
   // 判断ip是否允许访问
   # => true | false
-  public function is_ip_allow($ip){
+  public function isIpAllow($ip){
     if(empty($this->ip_allow))
       return false;
 
