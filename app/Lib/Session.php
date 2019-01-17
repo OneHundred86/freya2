@@ -8,9 +8,12 @@ namespace App\Lib;
 class Session
 {
   #################### 公共接口函数 #######################
-    public static function __callStatic($method, $params){
-      return \call_user_func_array([session(), $method], $params);
-    }
+  /*
+    接口说明请查看SessionInterface
+  */
+  public static function __callStatic($method, $params){
+    return \call_user_func_array([session(), $method], $params);
+  }
 
   ################### 当前登录用户id ########################
   static public function getLoginUserID(){
