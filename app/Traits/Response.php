@@ -9,11 +9,13 @@ trait Response{
   # code : int|mix  0成功，其他数字表示错误
   # data : mix
   public function o($code = ERROR_OK, $data = ""){
-    return response()->make(Output::o($code, $data));
+    // return response()->make(Output::o($code, $data));
+    return response()->make(json_encode(Output::o($code, $data), JSON_UNESCAPED_UNICODE), 200, ['Content-Type' => 'application/json']);
   }
 
   public function e($code = ERROR_ERR, $data = ""){
-    return response()->make(Output::e($code, $data));
+    // return response()->make(Output::e($code, $data));
+    return response()->make(json_encode(Output::e($code, $data), JSON_UNESCAPED_UNICODE), 200, ['Content-Type' => 'application/json']);
   }
 
   # $msg : int|string
