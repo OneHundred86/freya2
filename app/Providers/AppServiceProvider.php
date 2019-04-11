@@ -7,6 +7,7 @@ use App\Entity\User;
 
 class AppServiceProvider extends ServiceProvider
 {
+    use \App\Traits\Response;
     /**
      * Bootstrap any application services.
      *
@@ -16,8 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // 修改root url
         $url = env('APP_URL');
-        \URL::forceRootUrl($url);
-        \URL::forceScheme(substr($url, 0, strpos($url, ':')));
+        $this->forceRootUrl($url);
     }
 
     /**

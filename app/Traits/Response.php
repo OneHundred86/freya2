@@ -50,5 +50,10 @@ trait Response{
     return redirect($uri);
   }
 
+  public function forceRootUrl($url){
+    \URL::forceRootUrl($url);
+    \URL::forceScheme(substr($url, 0, strpos($url, ':')));
+  }
+
 }
 
