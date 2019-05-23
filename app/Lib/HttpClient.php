@@ -15,21 +15,23 @@ class HttpClient
   }
 
   // get请求
-  # $headers = array()  [$key => $val]
-  # #allowRedirects = true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
+  # $headers :: array()  [$key => $val]
+  # $timeout :: float     超时秒数，0表示一直等待response结果
+  # #allowRedirects :: true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
   # => false | string()
-  public static function get($url, $headers = [], $allowRedirects = false){
-    return self::request('GET', $url, [], [], $headers, $allowRedirects);
+  public static function get($url, $headers = [], $timeout = 0, $allowRedirects = false){
+    return self::request('GET', $url, [], [], $headers, $timeout, $allowRedirects);
   }
 
   // post请求
-  # $params = array()   表单post数据  [$key => $val]
-  # $files = array()    表单上传文件数组 [$key => $filename]
-  # $headers = array()  [$key => $val]
-  # #allowRedirects = true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
+  # $params :: array()   表单post数据  [$key => $val]
+  # $files :: array()    表单上传文件数组 [$key => $filename]
+  # $headers :: array()  [$key => $val]
+  # $timeout :: float     超时秒数，0表示一直等待response结果
+  # #allowRedirects :: true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
   # => false | string()
-  public static function post($url, $params = [], $files = [], $headers = [], $allowRedirects = false){
-    return self::request('POST', $url, $params, $files, $headers, $allowRedirects);
+  public static function post($url, $params = [], $files = [], $headers = [], $timeout = 0, $allowRedirects = false){
+    return self::request('POST', $url, $params, $files, $headers, $timeout, $allowRedirects);
   }
 
   // 获取上次执行http请求时，返回的状态码
@@ -38,12 +40,13 @@ class HttpClient
   }
 
   // http请求
-  # $params = array()   表单post数据  [$key => $val]
-  # $files = array()    表单上传文件数组 [$key => $filename]
-  # $headers = array()  [$key => $val]
-  # #allowRedirects = true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
+  # $params :: array()   表单post数据  [$key => $val]
+  # $files :: array()    表单上传文件数组 [$key => $filename]
+  # $headers :: array()  [$key => $val]
+  # $timeout :: float     超时秒数，0表示一直等待response结果
+  # $allowRedirects :: true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
   # => false | string()
-  public static function request($method, $url, $params = [], $files = [], $headers = [], $allowRedirects = false){
+  public static function request($method, $url, $params = [], $files = [], $headers = [], $timeout = 0, $allowRedirects = false){
     try{
       $stack = new HandlerStack();
       $stack->setHandler(new CurlHandler());
@@ -54,6 +57,7 @@ class HttpClient
           'headers' => $headers,
           'form_params' => $params,
           'allow_redirects' => $allowRedirects,
+          'timeout' => $timeout,
         ]);
       }else{  // 上传文件
         $arr = [];
