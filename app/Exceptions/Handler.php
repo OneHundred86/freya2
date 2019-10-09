@@ -58,9 +58,11 @@ class Handler extends ExceptionHandler
         $isGetMethod = $request->isMethod('GET');
         if($exception instanceof HttpException){
             $statusCode = $exception->getStatusCode();
+            $msg = $exception->getMessage();
+
             // 自定义处理的异常http状态码页面
             if($isGetMethod)
-                return $this->errorPage($statusCode, 'error', $statusCode);
+                return $this->errorPage($msg ?: $statusCode, 'error', $statusCode);
             else
                 return $this->e($statusCode);
         }
