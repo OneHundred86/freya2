@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
             if($isGetMethod)
                 return $this->errorPage($msg ?: $statusCode, 'error', $statusCode);
             else
-                return $this->e($statusCode);
+                return $this->e($statusCode, $msg);
         }
 
         if($exception instanceof TokenMismatchException){
