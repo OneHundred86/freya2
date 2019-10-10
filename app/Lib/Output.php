@@ -17,7 +17,8 @@ class Output
     if(!is_integer($code)){
       $data = $code;
       $code = ERROR_OK;
-    }elseif(empty($data)){
+    }
+    if(empty($data)){
       $data = ErrCodeMsg::get($code);
     }
 
