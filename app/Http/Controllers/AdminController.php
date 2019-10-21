@@ -29,7 +29,7 @@ class AdminController extends Controller {
     ]);
 
     if (!Vericode::checkImageVericode($request->code))
-      return $this->e(ERROR_VERICODE_ERROR);
+      return $this->e(\ErrorCode::VERICODE_ERROR);
 
     $errorCode = UserLib::checkLogin($request->email, $request->password);
     if(!$errorCode instanceof UserModel)
@@ -47,7 +47,7 @@ class AdminController extends Controller {
     ]);
 
     if (!Vericode::checkImageVericode($request->code))
-      return $this->e(ERROR_VERICODE_ERROR);
+      return $this->e(\ErrorCode::VERICODE_ERROR);
 
     $errorCode = UserLib::checkAndLogin($request->email, $request->password, $request->keep);
     if(!$errorCode instanceof UserModel)

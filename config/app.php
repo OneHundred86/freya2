@@ -210,6 +210,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         // 自定义alias
+        'ErrorCode' => App\Lib\ErrorCode::class,
         'User' => App\Lib\User::class,
         'HttpClient' => App\Lib\HttpClient::class,
     ],

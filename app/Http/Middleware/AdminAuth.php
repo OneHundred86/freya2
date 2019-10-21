@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Model\LogAccess;
 use App\Lib\CharacterAuth;
-use App\Lib\Output;
 use App\Lib\User as UserLib;
 use App\Traits\Response as ResponseTrait;
 
@@ -30,9 +29,9 @@ class AdminAuth
 
         if($user->ban != USER_UNBAN){
             if($isGetMethod)
-                return $this->errorPage(ERROR_USER_BANED);
+                return $this->errorPage(\ErrorCode::USER_BANED);
             else
-                return $this->e(ERROR_USER_BANED);
+                return $this->e(\ErrorCode::USER_BANED);
         }
 
         $path = $request->path();
@@ -40,9 +39,9 @@ class AdminAuth
         if($auth){
             if(!$user->checkAuth($auth)){
                 if($isGetMethod)
-                    return $this->errorPage(ERROR_USER_NOT_ALLOWED);
+                    return $this->errorPage(\ErrorCode::USER_NOT_ALLOWED);
                 else
-                    return $this->e(ERROR_USER_NOT_ALLOWED);
+                    return $this->e(\ErrorCode::USER_NOT_ALLOWED);
             }
         }
 

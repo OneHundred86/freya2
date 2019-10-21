@@ -72,14 +72,14 @@ class User
   static public function checkLogin($email, $password){
     $user = UserModel::where('email', $email)->first();
     if(empty($user)){
-      return ERROR_USER_NOT_EXISTS;
+      return \ErrorCode::USER_NOT_EXISTS;
     }elseif($user->ban === USER_BANED){
-      return ERROR_USER_BANED;
+      return \ErrorCode::USER_BANED;
     }
 
     $password1 = self::makePassword($password, $user->salt, MD5_STRING);
     if($user->password != $password1)
-      return ERROR_PASSWORD_ERROR;
+      return \ErrorCode::PASSWORD_ERROR;
 
     return $user;
   }

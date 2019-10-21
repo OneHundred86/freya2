@@ -1,27 +1,45 @@
 <?php
 namespace App\Traits;
 
-use App\Lib\Output;
-use App\Lib\ErrCodeMsg;
+use App\Lib\ErrorCode;
 
 trait Response{
+  // 格式化数据返回格式
+  protected function format($code, $data = null){
+    if(!is_integer($code)){
+      $data = $code;
+      $code = ErrorCode::OK;
+    }
+    if(empty($data)){
+      $data = ErrorCode::get($code);
+    }
+
+    return [
+      'code' => $code,
+      'data' => $data,
+    ];
+  }
+
   // 自定义借口：输出json
   # code : int|mix  0成功，其他数字表示错误
   # data : mix
-  public function o($code = ERROR_OK, $data = ""){
-    // return response()->make(Output::o($code, $data));
-    return response()->make(json_encode(Output::o($code, $data), JSON_UNESCAPED_UNICODE), 200, ['Content-Type' => 'application/json']);
+  public function o($code = ErrorCode::OK, $data = null){
+    return response()->make(json_encode($this->format($code, $data), JSON_UNESCAPED_UNICODE), 200, ['Content-Type' => 'application/json']);
   }
 
-  public function e($code = ERROR_ERR, $data = ""){
-    // return response()->make(Output::e($code, $data));
-    return response()->make(json_encode(Output::e($code, $data), JSON_UNESCAPED_UNICODE), 200, ['Content-Type' => 'application/json']);
+  public function e($code = ErrorCode::ERROR, $data = null){
+    if(!is_integer($code)){
+      $data = $code;
+      $code = ErrorCode::ERROR;
+    }
+
+    return $this->o($code, $data);
   }
 
   # $msg : int|string
-  public function errorPage($msg = ERROR_ERR, $errorView = 'error', $statusCode = 200){
+  public function errorPage($msg = ErrorCode::ERROR, $errorView = 'error', $statusCode = 200){
     if(is_integer($msg))
-      $msg = ErrCodeMsg::get($msg);
+      $msg = ErrorCode::get($msg);
 
     return $this->simpleView("error/$errorView", ['error_msg' => $msg], $statusCode);
   }
