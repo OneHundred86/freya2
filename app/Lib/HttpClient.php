@@ -1,7 +1,6 @@
 <?php
 namespace App\Lib;
 
-use Illuminate\Support\Facades\Log as Log;
 use GuzzleHttp\Client as Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\CurlHandler;
@@ -9,7 +8,8 @@ use GuzzleHttp\Handler\CurlHandler;
 class HttpClient
 {
   // 上次执行http请求，返回的状态码
-  private static $statusCode = null;
+  private static $status_code = null;
+  private static $response_headers;
 
   public function __construct(){
   }
@@ -34,9 +34,25 @@ class HttpClient
     return self::request('POST', $url, $params, $files, $headers, $timeout, $allowRedirects);
   }
 
-  // 获取上次执行http请求时，返回的状态码
-  public static function getLastStatusCode(){
-    return self::$statusCode;
+  // 获取上次http请求的状态码
+  public static function getStatusCode(){
+    return self::$status_code;
+  }
+
+  // 获取上次http请求的所有头部列表
+  public static function getResponseHeaders(){
+    return self::$response_headers;
+  }
+
+  // 获取上次http请求的头部
+  public static function getResponseHeader(string $header){
+    if(!self::$response_headers)
+      return null;
+
+    if(array_key_exists($header, self::$response_headers))
+      return self::$response_headers[$header];
+
+    return null;
   }
 
   // http请求
@@ -47,6 +63,8 @@ class HttpClient
   # $allowRedirects :: true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
   # => false | string()
   public static function request($method, $url, $params = [], $files = [], $headers = [], $timeout = 0, $allowRedirects = false){
+    self::$status_code = null;
+    self::$response_headers = null;
     try{
       $stack = new HandlerStack();
       $stack->setHandler(new CurlHandler());
@@ -80,7 +98,8 @@ class HttpClient
         ]);
       }
 
-      self::$statusCode = $response->getStatusCode(); // 状态码不正常时，会自动抛出异常
+      self::$status_code = $response->getStatusCode(); // 状态码不正常时，会自动抛出异常
+      self::$response_headers = $response->getHeaders();
       $content = $response->getBody()->getContents();
 
       return $content;
@@ -93,13 +112,8 @@ class HttpClient
         'files'       => $files,
         'error'       => $e->getMessage()
       ];
-      Log::error('HttpClient request:', $error);
+      \Log::error(__METHOD__, $error);
       return false;
     }
   }
-
 }
-
-
-
-
