@@ -70,10 +70,19 @@ class HttpClient
       $stack->setHandler(new CurlHandler());
       $client = new Client(['handler' => $stack]);
 
+      # 默认是表单提交
       if(empty($files)){
+        if(empty($headers['Content-Type'])){
+          $bkey = "form_params";
+        }elseif($headers['Content-Type'] == 'application/json'){
+          $bkey = "json";
+        }else{
+          $bkey = "form_params";
+        }
+
         $response = $client->request($method, $url, [
           'headers' => $headers,
-          'form_params' => $params,
+          $bkey => $params,
           'allow_redirects' => $allowRedirects,
           'timeout' => $timeout,
         ]);
