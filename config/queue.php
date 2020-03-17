@@ -60,7 +60,7 @@ return [
         'redis' => [
             'driver' => 'redis',
             'connection' => 'default',
-            'queue' => 'default',
+            'queue' => str_slug(env('APP_NAME', 'laravel'), '_'),
             'retry_after' => 90,
             'block_for' => null,
         ],
