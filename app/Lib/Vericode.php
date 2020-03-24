@@ -17,8 +17,12 @@ class Vericode
 
   // 校对图形验证码的正确性
   # => true | false
-  public static function checkImageVericode($code){
+  public static function checkImageVericode($code, $invalid_code = true){
     $sessionCode = Session::getImageVericode();
+
+    if($invalid_code) # 图片验证码，建议无论对错都单次有效
+      self::invalidImageVericode();
+
     if(empty($sessionCode))
       return false;
     elseif(strtolower($sessionCode) != strtolower($code))
