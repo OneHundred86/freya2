@@ -28,7 +28,7 @@ class AdminController extends Controller {
       'code' => 'required|string',
     ]);
 
-    if (!Vericode::checkImageVericode($request->code))
+    if (!Vericode::checkImageVericode($request->code, false))
       return $this->e(\ErrorCode::VERICODE_ERROR);
 
     $errorCode = UserLib::checkLogin($request->email, $request->password);
