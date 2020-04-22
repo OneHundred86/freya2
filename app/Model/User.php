@@ -4,8 +4,6 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Lib\User as UserLib;
-use App\Entity\User as UserEntity;
 
 class User extends Model
 {
