@@ -20,12 +20,26 @@ class AdminAuth
      */
     public function handle($request, Closure $next)
     {
-        $user = UserLib::getLoginUser();
-        if(empty($user)){
-            return $this->redirect('adminLogin');
+        $isGetMethod = $request->isMethod('GET');
+        $path = $request->path();
+
+        $user_id = Session::getLoginUserID();
+        if(!$user_id){
+            if($isGetMethod)
+                return $this->redirect('adminLogin');
+            else
+                return $this->e(401);
         }
 
-        $isGetMethod = $request->isMethod('GET');
+        $user = UserModel::find($user_id);
+        if(!$user){
+            Session::flush();
+            if($isGetMethod)
+                return $this->redirect('adminLogin');
+            else
+                return $this->e(401);
+        }
+
 
         if($user->ban != USER_UNBAN){
             if($isGetMethod)
@@ -34,16 +48,8 @@ class AdminAuth
                 return $this->e(\ErrorCode::USER_BANED);
         }
 
-        $path = $request->path();
-        $auth = CharacterAuth::getAuthByRoute($path);
-        if($auth){
-            if(!$user->checkAuth($auth)){
-                if($isGetMethod)
-                    return $this->errorPage(\ErrorCode::USER_NOT_ALLOWED);
-                else
-                    return $this->e(\ErrorCode::USER_NOT_ALLOWED);
-            }
-        }
+        $ue = app()->make(UserEntity::class);
+        $ue->setModel($user);
 
         // access log
         $log = new LogAccess;
