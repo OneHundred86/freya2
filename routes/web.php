@@ -22,6 +22,7 @@ Route::group(
 	function () {
 		// debug
 		Route::any('debug/session', 'DebugController@session');
+		Route::any('debug/login', 'DebugController@login');
 		//
 		Route::get('/admin/login', 'AdminController@loginPage')->name('adminLogin');
 	}

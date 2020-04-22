@@ -3,9 +3,11 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Entity\User as UserEntity;
+use App\Model\User as UserModel;
 use App\Model\LogAccess;
 use App\Lib\CharacterAuth;
-use App\Lib\User as UserLib;
+use App\Lib\Session;
 use App\Traits\Response as ResponseTrait;
 
 class AdminAuth
