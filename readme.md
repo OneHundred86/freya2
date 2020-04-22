@@ -71,7 +71,8 @@ b、修改nginx和php-fpm执行用户为www
             deny  all;
         }
     }
-3.限制文件上传大小(可选)
+###### 4.限制文件上传大小(可选)
+
 编辑php.ini
 
 ```
@@ -80,7 +81,7 @@ post_max_size       100M
 max_execution_time  300
 ```
 
-4.配置supervisor(可选) -- 队列
+###### 5.配置supervisor(可选) -- 队列
 
 ```
 [program:freya-worker]
@@ -94,19 +95,21 @@ redirect_stderr=true
 stdout_logfile=/var/www/test/storage/logs/supervisor.log
 ```
 
-5.配置定时器(可选)  crontab -e -u www
+###### 6.配置定时器(可选)  crontab -e -u www
 
 ```
 * * * * * php /var/www/test/artisan schedule:run >> /dev/null 2>&1
 ```
 
-6.生成env的key
+###### 7.生成env的key
+
 php artisan key:generate
 
-7.迁移数据库
+###### 8.迁移数据库
+
 php artisan migrate
 
-##### install
+###### 9.install
 composer install
 php artisan migrate
 php artisan tinker => User::add('freya@test.com', 'test123', RAW_STRING, 1);
