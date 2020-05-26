@@ -112,8 +112,5 @@ php artisan migrate
 ###### 9.install
 composer install
 php artisan migrate
-php artisan tinker => User::add('freya@test.com', 'test123', RAW_STRING, 1);
-
-
 
 
