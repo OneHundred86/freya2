@@ -60,9 +60,9 @@
 </head>
 <body>
 <div class="error-box">
-    <p class="error-text">错误原因：{{ $error_msg }}</p>
+    <p class="error-text">错误原因：{{ $msg }}</p>
     <div class="row">
-        <a class="first" href="#" onclick="history.go(-1)">返回</a>
+        <a class="first" href="javascript:void(0);" onclick="history.go(-1)">返回</a>
         <a href="{{url('/')}}">去首页</a>
     </div>
 </div>

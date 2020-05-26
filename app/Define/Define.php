@@ -2,6 +2,7 @@
 
 // 超级管理员用户分组
 define('USERGROUP_ADMIN', 1);
+define('USERGROUP_USER', 2);
 
 // 字符串类型
 define('RAW_STRING', 0);

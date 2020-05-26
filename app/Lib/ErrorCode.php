@@ -32,6 +32,8 @@ class ErrorCode
         return 'ok';
       case self::ERROR:
         return 'error';
+      case 401:
+        return '请先登录';
       case 403:
         return '403 Forbidden';
       case 404:

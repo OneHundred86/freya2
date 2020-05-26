@@ -20,48 +20,74 @@ class AdminAuth
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $routeGroup)
     {
-        $isGetMethod = $request->isMethod('GET');
-        $path = $request->path();
+        $user = $this->getLoginUser();
 
+        if($routeGroup == 'adminpage'){
+            $this->handle_adminpage($request, $user);
+        }elseif($routeGroup == 'person'){
+            $this->handle_person($request, $user);
+        }elseif($routeGroup == 'super'){
+            $this->handle_superadmin($request, $user);
+        }else{
+            $this->abort(sprintf('路由组未定义：%s', $routeGroup));
+        }
+
+        $this->log($request, $user, $routeGroup);
+
+        return $next($request);
+    }
+
+    // 后台页面
+    public function handle_adminpage($request, UserEntity $user){
+        // todo
+    }
+
+    // 个人中心
+    public function handle_person($request, UserEntity $user){
+        // todo
+    }
+
+    // 超管
+    public function handle_superadmin($request, UserEntity $user){
+        if($user->group != USERGROUP_ADMIN){
+            $this->abort(ErrorCode::USER_NOT_ALLOWED);
+        }
+    }
+
+
+    # => UserEntity
+    private function getLoginUser(){
         $user_id = Session::getLoginUserID();
         if(!$user_id){
-            if($isGetMethod)
-                return $this->redirect('adminLogin');
-            else
-                return $this->e(401);
+            $this->abort(401);
         }
 
         $user = UserModel::find($user_id);
         if(!$user){
             Session::flush();
-            if($isGetMethod)
-                return $this->redirect('adminLogin');
-            else
-                return $this->e(401);
+            $this->abort(401);
         }
 
-
         if($user->ban != USER_UNBAN){
-            if($isGetMethod)
-                return $this->errorPage(\ErrorCode::USER_BANED);
-            else
-                return $this->e(\ErrorCode::USER_BANED);
+            $this->abort(\ErrorCode::USER_BANED);
         }
 
         $ue = app()->make(UserEntity::class);
         $ue->setModel($user);
 
+        return $ue;
+    }
+
+    private function log($request, UserEntity $user, $routeGroup){
         // access log
         $log = new LogAccess;
-        $log->type = 'admin';
+        $log->type = $routeGroup;
         $log->user_id = $user->id;
-        $log->api = $path;
+        $log->api = $request->url();
         $log->params = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
         $log->ip = $request->ip();
         $log->save();
-        
-        return $next($request);
     }
 }

@@ -56,13 +56,26 @@ class Handler extends ExceptionHandler
     {
         // dd($exception);
         $isGetMethod = $request->isMethod('GET');
+
+        // 自定义错误码异常捕捉
+        if($exception instanceof ErrorCodeException){
+            $code = $exception->getCode();
+            $msg = $exception->getMessage();
+            $data = $exception->getData();
+
+            if($isGetMethod)
+                return $this->errorPage($msg ?: $code, 200);
+            else
+                return $this->e($code, $msg, $data);
+        }
+
         if($exception instanceof HttpException){
             $statusCode = $exception->getStatusCode();
             $msg = $exception->getMessage();
 
             // 自定义处理的异常http状态码页面
             if($isGetMethod)
-                return $this->errorPage($msg ?: $statusCode, 'error', $statusCode);
+                return $this->errorPage($msg ?: $statusCode, $statusCode);
             else
                 return $this->e($statusCode, $msg);
         }
@@ -77,7 +90,7 @@ class Handler extends ExceptionHandler
             // 自定义处理的异常http状态码页面
             $statusCode = 500;
             if($isGetMethod)
-                return $this->errorPage($statusCode, 'error', $statusCode);
+                return $this->errorPage($statusCode, $statusCode);
             else
                 return $this->e($statusCode);
         }

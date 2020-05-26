@@ -14,11 +14,11 @@ use Illuminate\Http\Request;
 */
 // private api
 Route::group(
-  [
-    'middleware' => 'privateApi',
-    'prefix' => 'private',
-  ],
-  function(){
-    
-  }
+    [
+        'middleware' => 'privateApi',
+        'prefix' => 'private',
+    ],
+    function(){
+
+    }
 );

@@ -12,32 +12,51 @@
 */
 
 Route::get('/', function () {
-	return view('welcome');
+    return view('welcome');
 });
 
 // public
 Route::group(
-	[
-	],
-	function () {
-		// debug
-		Route::any('debug/session', 'DebugController@session');
-		Route::any('debug/login', 'DebugController@login');
-		//
-		Route::get('/admin/login', 'AdminController@loginPage')->name('adminLogin');
-	}
+    [
+    ],
+    function () {
+        // debug
+        Route::any('debug/session', 'DebugController@session');
+        Route::any('debug/login', 'DebugController@login');
+        //
+        Route::get('/admin/login', 'AdminController@loginPage')->name('adminLogin');
+    }
 );
 
-// admin
+// 后台页面
 Route::group(
-	[
-		'middleware' => 'adminAuth',
-		'prefix' => 'admin'
-	],
-	function () {
-		Route::get('/', 'AdminController@index')->name('adminIndex');
-	}
+    [
+        'middleware' => 'auth:adminpage',
+        'prefix' => 'admin'
+    ],
+    function () {
+        Route::get('/', 'AdminController@index')->name('adminIndex');
+    }
 );
 
+// 用户个人中心接口
+Route::group(
+    [
+        'middleware' => 'auth:person',
+        'prefix' => 'person'
+    ],
+    function () {
+        Route::post('info', 'UserController@info');
+    }
+);
 
+// 超管接口
+Route::group(
+    [
+        'middleware' => 'auth:super',
+        'prefix' => 'super'
+    ], 
+    function () {
+    }
+);
 

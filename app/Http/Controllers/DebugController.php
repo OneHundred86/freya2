@@ -21,6 +21,8 @@ class DebugController extends Controller
     public function login(Request $request){
         $uid = $request->uid;
 
+        // $this->abort(\ErrorCode::USER_NOT_EXISTS);
+
         $um = UserModel::find($uid);
         if(!$um){
             return $this->errorPage(\ErrorCode::USER_NOT_EXISTS);

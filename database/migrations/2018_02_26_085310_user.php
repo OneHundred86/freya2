@@ -17,7 +17,7 @@ class User extends Migration
             $table->increments('id');
             $table->string('email')->index();
             $table->string('password');
-            $table->string('salt');
+            $table->unsignedInteger('group');
             $table->tinyinteger('ban')->default(0)->comment('0正常1禁止');
             $table->timestamps();
             $table->softDeletes();
