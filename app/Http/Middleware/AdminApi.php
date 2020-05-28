@@ -10,7 +10,7 @@ use App\Lib\CharacterAuth;
 use App\Lib\Session;
 use App\Traits\Response as ResponseTrait;
 
-class AdminAuth
+class AdminApi
 {
     use ResponseTrait;
     /**
@@ -23,10 +23,8 @@ class AdminAuth
     public function handle($request, Closure $next, $routeGroup)
     {
         $user = $this->getLoginUser();
-
-        if($routeGroup == 'adminpage'){
-            $this->handle_adminpage($request, $user);
-        }elseif($routeGroup == 'person'){
+        
+        if($routeGroup == 'person'){
             $this->handle_person($request, $user);
         }elseif($routeGroup == 'super'){
             $this->handle_superadmin($request, $user);
@@ -37,11 +35,6 @@ class AdminAuth
         $this->log($request, $user, $routeGroup);
 
         return $next($request);
-    }
-
-    // 后台页面
-    public function handle_adminpage($request, UserEntity $user){
-        // todo
     }
 
     // 个人中心

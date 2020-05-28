@@ -59,7 +59,8 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         // 自定义
-        'auth' => \App\Http\Middleware\AdminAuth::class,
+        'adminPage' => \App\Http\Middleware\AdminPage::class,
+        'adminApi' => \App\Http\Middleware\AdminApi::class,
         'privateApi' => \App\Http\Middleware\PrivateApi::class,
     ];
 }

@@ -31,7 +31,7 @@ Route::group(
 // 后台页面
 Route::group(
     [
-        'middleware' => 'auth:adminpage',
+        'middleware' => 'adminPage',
         'prefix' => 'admin'
     ],
     function () {
@@ -42,7 +42,7 @@ Route::group(
 // 用户个人中心接口
 Route::group(
     [
-        'middleware' => 'auth:person',
+        'middleware' => 'adminApi:person',
         'prefix' => 'person'
     ],
     function () {
@@ -53,7 +53,7 @@ Route::group(
 // 超管接口
 Route::group(
     [
-        'middleware' => 'auth:super',
+        'middleware' => 'adminApi:super',
         'prefix' => 'super'
     ], 
     function () {
