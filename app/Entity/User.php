@@ -22,13 +22,6 @@ class User extends EntityBase
     }
   }
 
-  // 判断用户是否有指定角色权限
-  # $auth = sprintf('%s.%s', $module, $authKey);
-  # => true | false
-  public function checkAuth(string $auth){
-    return UserLib::checkCharacterAuth($this, $auth);
-  }
-
 }
 
 
