@@ -2,7 +2,6 @@
 namespace App\Entity;
 
 use App\Model\User as UserModel;
-use App\Lib\User as UserLib;
 
 /**
 * 当前登录的用户实体
