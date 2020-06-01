@@ -42,6 +42,8 @@ class ErrorCode
         return '405 Method Not Allowed';
       case 419:
         return '419 页面已失效，请刷新重试';
+      case 422:
+        return '参数不合法';
       case 500:
         return '500 Internal Server Error';
       case self::VERICODE_ERROR:

@@ -80,6 +80,16 @@ class Handler extends ExceptionHandler
                 return $this->e($statusCode, $msg);
         }
 
+        if($exception instanceof ValidationException){
+            $statusCode = $exception->status;
+
+            if($isGetMethod){
+                return $this->errorPage($statusCode, $statusCode);
+            }else{
+                return $this->e($statusCode, '', $exception->errors());
+            }
+        }
+
         if($exception instanceof TokenMismatchException){
             // 自定义处理的异常http状态码页面
             $statusCode = 419;
