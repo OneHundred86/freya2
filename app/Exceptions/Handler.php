@@ -81,7 +81,7 @@ class Handler extends ExceptionHandler
         }
 
         if($exception instanceof ValidationException){
-            $statusCode = $exception->status;
+            $statusCode = $exception->status; // 422
 
             if($isGetMethod){
                 return $this->errorPage($statusCode, $statusCode);
