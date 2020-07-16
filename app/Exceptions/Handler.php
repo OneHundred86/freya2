@@ -63,10 +63,12 @@ class Handler extends ExceptionHandler
             $msg = $exception->getMessage();
             $data = $exception->getData();
 
-            if($isGetMethod)
-                return $this->errorPage($msg ?: $code, 200);
-            else
+            if($isGetMethod){
+                $statusCode = $code >= 100 && $code <= 599 ? $code : 200;
+                return $this->errorPage($msg ?: $code, $statusCode);
+            }else{
                 return $this->e($code, $msg, $data);
+            }
         }
 
         if($exception instanceof HttpException){
