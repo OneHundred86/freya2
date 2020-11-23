@@ -6,27 +6,27 @@ use App\Exceptions\ErrorCodeException;
 
 trait Response{
   // 自定义借口：输出json
-  # code : int|mix  0成功，其他数字表示错误
+  # errcode : int|mix  0成功，其他数字表示错误
   # data : mix
   public function o($data = null){
-    $code = ErrorCode::OK;
-    $message = ErrorCode::get($code);
+    $errcode = ErrorCode::OK;
+    $errmessage = ErrorCode::get($errcode);
 
-    $arr = compact('code', 'message', 'data');
+    $arr = compact('errcode', 'errmessage', 'data');
 
     return response()->make(json_encode($arr, JSON_UNESCAPED_UNICODE), 200, ['Content-Type' => 'application/json']);
   }
 
-  public function e($code = ErrorCode::ERROR, $message = null, $data = null){
-    if(!is_integer($code)){
-      $message = $code;
-      $code = ErrorCode::ERROR;
+  public function e($errcode = ErrorCode::ERROR, $errmessage = null, $data = null){
+    if(!is_integer($errcode)){
+      $errmessage = $errcode;
+      $errcode = ErrorCode::ERROR;
     }
-    if(empty($message)){
-      $message = ErrorCode::get($code);
+    if(empty($errmessage)){
+      $errmessage = ErrorCode::get($errcode);
     }
 
-    $arr = compact('code', 'message', 'data');
+    $arr = compact('errcode', 'errmessage', 'data');
 
     return response()->make(json_encode($arr, JSON_UNESCAPED_UNICODE), 200, ['Content-Type' => 'application/json']);
   }
@@ -39,8 +39,8 @@ trait Response{
     return response()->view("error/error", compact('msg'), $statusCode);
   }
 
-  public function abort($code = ErrorCode::ERROR, $message = null, $data = null){
-    throw new ErrorCodeException($code, $message, $data);
+  public function abort($errcode = ErrorCode::ERROR, $errmessage = null, $data = null){
+    throw new ErrorCodeException($errcode, $errmessage, $data);
   }
 
   public function redirect2RouteName($routeName, $params = [], $absolute = true){

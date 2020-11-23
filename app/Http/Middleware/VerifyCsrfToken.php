@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Encryption\Encrypter;
 
 class VerifyCsrfToken extends Middleware
 {
@@ -16,6 +18,16 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         '/debug/*',
     ];
+
+    public function __construct(Application $app, Encrypter $encrypter)
+    {
+        parent::__construct($app, $encrypter);
+
+        # 调试模式，不使用csrf token校验
+        if(env('APP_DEBUG') == true){
+          $this->except[] = '*';
+        }
+    }
 
     public function handle($request, Closure $next)
     {
