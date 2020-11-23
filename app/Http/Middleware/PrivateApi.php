@@ -25,12 +25,12 @@ class PrivateApi
         }
 
         // access log
-        $log = new LogPrivateApiModel;
-        $log->app = $request->app;
-        $log->api = $request->path();
-        $log->params = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
-        $log->ip = $request->ip();
-        $log->save();
+        \Log::channel('private-api-access')->debug(__METHOD__, [
+            'app' => $request->app,
+            'api' => $request->path(),
+            'ip' => $request->ip(),
+            'params' => substr(json_encode($request->all(), JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES), 0, 65535),
+        ]);
         
         return $next($request);
     }

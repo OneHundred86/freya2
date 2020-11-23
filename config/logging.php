@@ -65,6 +65,20 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+
+        'web-access' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/web-access.log'),
+            'level' => 'debug',
+            'days' => 90,
+        ],
+
+        'private-api-access' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/private-api-access.log'),
+            'level' => 'debug',
+            'days' => 180,
+        ],
     ],
 
 ];

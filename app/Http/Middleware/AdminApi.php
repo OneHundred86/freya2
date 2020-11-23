@@ -74,12 +74,11 @@ class AdminApi
 
     private function log($request, UserEntity $user, $routeGroup){
         // access log
-        $log = new LogAccess;
-        $log->type = $routeGroup;
-        $log->user_id = $user->id;
-        $log->api = $request->url();
-        $log->params = json_encode($request->all(), JSON_UNESCAPED_UNICODE);
-        $log->ip = $request->ip();
-        $log->save();
+        \Log::channel('web-access')->debug(__METHOD__, [
+            'user_id' => $user->id,
+            'api' => $request->path(),
+            'ip' => $request->ip(),
+            'params' => substr(json_encode($request->all(), JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES), 0, 65535),
+        ]);
     }
 }
