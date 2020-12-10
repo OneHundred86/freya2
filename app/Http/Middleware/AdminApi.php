@@ -23,8 +23,8 @@ class AdminApi
     {
         $user = $this->getLoginUser();
         
-        if($routeGroup == 'person'){
-            $this->handle_person($request, $user);
+        if($routeGroup == 'user'){
+            $this->handle_user($request, $user);
         }elseif($routeGroup == 'super'){
             $this->handle_superadmin($request, $user);
         }else{
@@ -37,7 +37,7 @@ class AdminApi
     }
 
     // 个人中心
-    public function handle_person($request, UserEntity $user){
+    public function handle_user($request, UserEntity $user){
         // todo
     }
 

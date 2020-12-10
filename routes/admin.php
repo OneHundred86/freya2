@@ -13,8 +13,8 @@ Route::group(
 // 用户个人中心接口
 Route::group(
     [
-        'middleware' => 'adminApi:person',
-        'prefix' => 'person'
+        'middleware' => 'adminApi:user',
+        'prefix' => 'user'
     ],
     function () {
         Route::post('info', 'UserController@info');
