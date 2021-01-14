@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Events\QueryExecuted;
 use App\Entity\User;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,6 +19,19 @@ class AppServiceProvider extends ServiceProvider
         // 修改root url
         $url = env('APP_URL');
         $this->forceRootUrl($url);
+
+        # debug模式，打印sql语句
+        !env('APP_DEBUG') ?: \Event::listen(QueryExecuted::class, function(QueryExecuted $queryExecuted) {
+            $queryExecuted->bindings = collect($queryExecuted->bindings)->map(function (&$arg) {
+                if (is_string($arg)) {
+                    $arg = "'" . $arg . "'";
+                }
+
+                return $arg;
+            });
+
+            \Log::info(sprintf(str_replace('?', '%s', str_replace('%', '%%', $queryExecuted->sql)), ...$queryExecuted->bindings));
+        });
     }
 
     /**
