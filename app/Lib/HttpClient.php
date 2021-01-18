@@ -15,23 +15,36 @@ class HttpClient
   }
 
   // get请求
+  # $params :: array()   表单post数据  [$key => $val]，而非query_string
+  # $params_type :: string()  'form_params' | 'multipart' | 'json'
+  #         'form_params': application/x-www-form-urlencoded
+  #         'multipart': multipart/form-data
+  #         'json': application/json
   # $headers :: array()  [$key => $val]
   # $timeout :: float     超时秒数，0表示一直等待response结果
   # #allowRedirects :: true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
   # => false | string()
-  public static function get($url, $headers = [], $timeout = 0, $allowRedirects = false){
-    return self::request('GET', $url, [], [], $headers, $timeout, $allowRedirects);
+  public static function get($url, $params = [], $params_type = 'form_params', $headers = [], $timeout = 0, $allowRedirects = false){
+    return self::request('GET', $url, $params, $params_type, [], $headers, $timeout, $allowRedirects);
   }
 
   // post请求
   # $params :: array()   表单post数据  [$key => $val]
+  # $params_type :: string()  'form_params' | 'multipart' | 'json'
+  #         'form_params': application/x-www-form-urlencoded
+  #         'multipart': multipart/form-data
+  #         'json': application/json
   # $files :: array()    表单上传文件数组 [$key => $filename]
   # $headers :: array()  [$key => $val]
   # $timeout :: float     超时秒数，0表示一直等待response结果
   # #allowRedirects :: true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
   # => false | string()
-  public static function post($url, $params = [], $files = [], $headers = [], $timeout = 0, $allowRedirects = false){
-    return self::request('POST', $url, $params, $files, $headers, $timeout, $allowRedirects);
+  public static function post($url, $params = [], $params_type = 'form_params',  $files = [], $headers = [], $timeout = 0, $allowRedirects = false){
+    return self::request('POST', $url, $params, $params_type, $files, $headers, $timeout, $allowRedirects);
+  }
+
+  public static function postJson($url, $params = [], $headers = [], $timeout = 0){
+    return self::post($url, $params, 'json', [], $headers, $timeout);
   }
 
   // 获取上次http请求的状态码
@@ -57,12 +70,16 @@ class HttpClient
 
   // http请求
   # $params :: array()   表单post数据  [$key => $val]
+  # $params_type :: string()  'form_params' | 'multipart' | 'json'
+  #         'form_params': application/x-www-form-urlencoded
+  #         'multipart': multipart/form-data
+  #         'json': application/json
   # $files :: array()    表单上传文件数组 [$key => $filename]
   # $headers :: array()  [$key => $val]
   # $timeout :: float     超时秒数，0表示一直等待response结果
   # $allowRedirects :: true | false   是否允许30x跳转，true则返回最终跳转url执行后的返回值
   # => false | string()
-  public static function request($method, $url, $params = [], $files = [], $headers = [], $timeout = 0, $allowRedirects = false){
+  public static function request($method, $url, $params = [], $params_type = 'form_params', $files = [], $headers = [], $timeout = 0, $allowRedirects = false){
     self::$status_code = null;
     self::$response_headers = null;
     try{
@@ -70,30 +87,28 @@ class HttpClient
       $stack->setHandler(new CurlHandler());
       $client = new Client(['handler' => $stack]);
 
-      # 默认是表单提交
-      if(empty($files)){
-        if(empty($headers['Content-Type'])){
-          $bkey = "form_params";
-        }elseif($headers['Content-Type'] == 'application/json'){
-          $bkey = "json";
-        }else{
-          $bkey = "form_params";
-        }
+      $options = [
+        'headers' => $headers,
+        'allow_redirects' => $allowRedirects,
+        'timeout' => $timeout,
+        'verify' => false,  # 临时忽略证书校验
+      ];
 
-        $response = $client->request($method, $url, [
-          'headers' => $headers,
-          $bkey => $params,
-          'allow_redirects' => $allowRedirects,
-          'timeout' => $timeout,
-        ]);
-      }else{  // 上传文件
+      # 上传文件必须使用multipart类型
+      if($files && $params_type != 'multipart'){
+        throw new \Exception("上传文件，params_type必须使用multipart", 1);
+      }
+
+      if($params_type == 'multipart'){
         $arr = [];
         foreach($files as $k => $v){
           $arr[] = [
             'name' => $k,
+            'filename' => basename($v),
             'contents' => fopen($v, 'r'),
           ];
         }
+
         foreach($params as $k => $v) {
           $arr[] = [
             'name' => $k,
@@ -101,12 +116,17 @@ class HttpClient
           ];
         }
 
-        $response = $client->request($method, $url, [
-          'headers' => $headers,
-          'multipart' => $arr,
-        ]);
+        if($arr){
+          $options['multipart'] = $arr;
+        }
+      }else{
+        # 请求体有内容，才发送对应格式请求
+        if($params){
+          $options[$params_type] = $params;
+        }
       }
 
+      $response = $client->request($method, $url, $options);
       self::$status_code = $response->getStatusCode(); // 状态码不正常时，会自动抛出异常
       self::$response_headers = $response->getHeaders();
       $content = $response->getBody()->getContents();
@@ -117,6 +137,7 @@ class HttpClient
         'method'      => $method,
         'url'         => $url,
         'headers'     => $headers,
+        'params_type' => $params_type,
         'params'      => $params,
         'files'       => $files,
         'error'       => $e->getMessage()
@@ -125,4 +146,4 @@ class HttpClient
       return false;
     }
   }
-}
+}}
