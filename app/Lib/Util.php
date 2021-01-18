@@ -35,6 +35,20 @@ class Util
     return $url;
   }
 
+  // 获取url的域名
+  # => string()
+  public static function getDomain($url) {
+    $s = explode('://', $url);
+    if (count($s) < 2) {
+      $r = $s[0];
+    }else{
+      $r = $s[1];
+    }
+
+    $t = explode('/', $r);
+    return $t[0];
+  }
+
   public static function filt_script($str){
     if(!$str)
       return $str;
