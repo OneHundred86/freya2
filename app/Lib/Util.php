@@ -68,7 +68,8 @@ class Util
     if(!$str)
       return $str;
 
-    return htmlentities($str, ENT_NOQUOTES);
+    // return htmlentities($str, ENT_NOQUOTES);
+    return htmlspecialchars($str, ENT_NOQUOTES);
   }
 
   public static function clean_xss($str){
@@ -79,6 +80,37 @@ class Util
     $str = self::filt_html($str);
 
     return $str;
+  }
+
+  // 递归获取文件夹的所有文件
+  # $path :: 文件夹路径
+  # $depth :: 遍历深度
+  # => array()
+  public static function listFiles(string $path, ?int $depth = null){
+    $arr = [];
+
+    if($depth !== null){
+      if($depth <= 0){
+        return $arr;
+      }
+
+      $depth--;
+    }
+
+    foreach(scandir($path) as $v){
+      if($v === '.' || $v === '..'){
+        continue;
+      }
+
+      $file = $path . "/$v";
+      if(is_dir($file)){
+        $arr = array_merge($arr, self::listFiles($file, $depth));
+      }else{
+        $arr[] = $file;
+      }
+    }
+
+    return $arr;
   }
 
 }
